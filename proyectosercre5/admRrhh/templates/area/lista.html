@@ -1,0 +1,124 @@
+{% extends "base.html" %} {% block encabezado %}Gestion area{% endblock %}
+{%block encabezadofor %} Lista de areas de trabajos {% endblock %} {% block js %}
+<p>Bienvenido, {{ user.username }}</p>
+
+<script>
+  function eliminarArea(id) {
+    Swal.fire({
+      title: "¿ Estas seguro que deseas Eliminar el Registro?",
+      text: "¡ No podras revertir esto!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: true,
+      confirmButtonText: " Si, Eliminar ",
+      cancelButtonText: " Volver ",
+    }).then(function (result) {
+      if (result.isConfirmed) {
+        window.location.href = "/areEliminar/" + id + " ";
+      }
+    });
+  }
+</script>
+{% endblock %}
+{% block contenido %}
+<div class="col-md-12">
+  <div class="row"id="grupo__nota">
+    <div class="col-md-6">
+      <form action="#" id="formulario6" method="GET">
+        <div class="btn-group">
+          <input type="text" name="buscar" class="form-control" id="nota"/>
+          <p class="formulario__input-error">""</p>
+          <button type="submit" class="btn btn-primary btn-sm">
+            <i class="fas fa-search fa-sm"></i>
+          </button>
+        </div>
+      </form>
+    </div>
+    <div class="col-md-6">
+      <a
+        class="btn btn-primary btn-sm"
+        style="float: right"
+        href="{% url 'areCrear' %}"
+        ><i class="fas fa-plus fa-sm"></i> Nuevo</a
+      >
+
+    </div>
+  </div>
+</div>
+<br />
+<div class="card shadow mb-4">
+  
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+      <div class="table-responsive">
+        <table
+          class="table table-striped"
+          id="dataTable"
+          width="100%"
+          cellspacing="0"
+        >
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th style="text-align: right;">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for area in areas %}
+              <tr>
+                <td>{{area.nombre_are}}</td>
+                <td style="text-align: right;">
+                  <a
+                    class="btn btn-primary btn-sm"
+                    href="{% url 'areEditar' area.id_are %}"
+                    ><i class="fas fa-pen"></i
+                  ></a>
+                  |
+                  <a
+                    class="btn btn-danger btn-sm"
+                    href="#"
+                    onclick="eliminarArea({{ area.id_are }})"
+                    ><i class="fas fa-trash"></i
+                  ></a>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        <nav aria-label="Page navigation">
+          <ul class="pagination">
+              {% if areas.has_previous %}
+                  <li class="page-item">
+                      <a class="page-link" href="?page=1" aria-label="Primera">
+                          <span aria-hidden="true">&laquo;&laquo;</span>
+                      </a>
+                  </li>
+                  <li class="page-item">
+                      <a class="page-link" href="?page={{ areas.previous_page_number }}" aria-label="Anterior">
+                          <span aria-hidden="true">&laquo;</span>
+                      </a>
+                  </li>
+              {% endif %}
+      
+              <li class="page-item disabled">
+                  <span class="page-link">Página {{ areas.number }} de {{ areas.paginator.num_pages }}</span>
+              </li>
+      
+              {% if areas.has_next %}
+                  <li class="page-item">
+                      <a class="page-link" href="?page={{ areas.next_page_number }}" aria-label="Siguiente">
+                          <span aria-hidden="true">&raquo;</span>
+                      </a>
+                  </li>
+                  <li class="page-item">
+                      <a class="page-link" href="?page={{ areas.paginator.num_pages }}" aria-label="Última">
+                          <span aria-hidden="true">&raquo;&raquo;</span>
+                      </a>
+                  </li>
+              {% endif %}
+          </ul>
+        </nav>
+      </div>
+    </div>
+</div>
+{% endblock %}

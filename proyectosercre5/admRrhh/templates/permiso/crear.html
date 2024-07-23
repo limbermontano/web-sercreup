@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block encabezado %}Gestion permisos{% endblock %}
+{% block encabezadofor %} Formulario de registro {% endblock %}
+
+{% block contenido %} 
+  <div class="card shadow mb-2">
+    <div class="container py-2">
+      <div class="row justify-content-center">
+        <form action="{% url 'permGuardar' %}" id="formulario" method="POST">
+          {% csrf_token %}
+          <div class="row">
+            <div class="col-sm-6">
+              <label for="exampleFormControlInput1" class="form-label">Persona</label>
+              <select name="usuario_perm" id="inputusuario_perm" class="form-control" required >
+              <option value="">-Seleccione-</option>
+             
+                    {% for persona in personas %}
+                      {% if persona.estado_per == 1 %}
+                      <option value="{{ persona.nombre_per }}">{{ persona.nombre_per }} {{persona.apellidoP_per }}</option>
+                      {% endif %} 
+                    {% endfor %}
+
+              </select>
+            </div>
+            <div class="col-sm-6">
+              <label for="exampleFormControlInput1" class="form-label">Permisos</label>
+              <select name="permiso_perm" id="inputpermiso_perm" class="form-control" required >
+              <option value="">-Seleccione-</option>
+             
+                    {% for permiso in permisos %}
+                     
+                      <option value="{{ permiso.id }}">{{ permiso.id }}</option>
+                     
+                    {% endfor %}
+
+              </select>
+            </div>
+            
+          
+          </div>
+          <br>
+          
+          <br>
+          <div class="row">
+            <div class="col-md-6">
+              <button type="submit" style="float: right" class="btn btn-primary btn-sm"><i class="fas fa-check fa-sm"></i>Guardar
+              </button>
+            </div>
+            <div class="col-md-6">
+                  <a class="btn btn-dark btn-sm " href="{% url 'permLista' %}"><i class="fas fa-arrow-left fa- sm"></i>Volver</a>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+{% endblock  %}

@@ -1,0 +1,61 @@
+<div id="profesionModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="profesionModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">REGISTRO DE PROFESION</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row justify-content-center">
+                    <form id="formulario1" method="POST" action="{% url 'profGuardarM' %}">
+                        {% csrf_token %}
+                        <div class="row mb-3" id="grupo__nombre">
+                            <div class="col-sm-12">
+                                <label for="nombre">Nombre profesion</label>
+                                <input type="text" class="text-uppercase form-control" name="nombre_prof" id="nombre" placeholder="Nombre de la profesion" required>
+                                <i class="formulario__validacion-estado fas fa-times-circle"></i>
+                                <p class="formulario__input-error">El campo solo puede contener letras</p>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row" >
+                            <div class="col-md-6">
+                                <button type="submit" class="btn btn-primary btn-sm">Guardar</button>
+                            </div>
+                            <div class="col-md-6">
+                                <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal">Cancelar</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>   
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function guardarDatosYCerrarModal() {
+    var formData = $('#formulario1').serialize();
+    $.ajax({
+        url: "{% url 'profGuardarM' %}",
+        type: "POST",
+        data: formData,
+        success: function(response) {
+            // Opcional: Actualiza el contenido del modal si es necesario
+            $('#profesionModal .modal-content').html(response);
+            // Cierra el modal
+            $('#profesionModal').modal('hide');
+        },
+        error: function(xhr, status, error) {
+            console.error(xhr.responseText);
+        }
+    });
+}
+
+// Si prefieres abrir el modal desde un botón fuera del modal
+$('#abrirModalArea').click(function() {
+    $('#profesionModal').modal('show');
+});
+</script>

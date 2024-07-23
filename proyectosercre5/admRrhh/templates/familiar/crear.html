@@ -1,0 +1,83 @@
+{% extends "base.html" %} {% block encabezado %}Gestion familiar {% endblock %}
+{% block encabezadofor %} Formulario de registro {% endblock %} 
+{% block contenido %}
+<div class="card shadow mb-4">
+  <div class="container p-3">
+    <div class="row justify-content-center">
+      <form action="{% url 'famGuardar' %}" id="formulario2" method="POST">
+        {% csrf_token %}
+        <div class="row">
+          <div class="col-sm-3">
+            <label for="exampleFormControlInput1" class="form-label">Personal Activo</label>
+            <select name="personal_fam" class="form-control" required>
+              <option value="">-Seleccione-</option>
+              {% for personal in personales %}
+                {% if personal.estado_perl == 1 %}
+
+                <option value="{{ personal.id_perl }}">{{ personal.persona_perl.nombre_per }} {{ personal.persona_perl.apellidoP_per }} </option>
+
+                {% endif %}
+              {% endfor %}
+            </select>
+          </div>
+          <div class="col-sm-3">
+            <label for="exampleFormControlInput1" class="form-label">Parentesco Familiar</label>
+            <select name="parentesco_fam" class="form-control" required>
+              <option value="">-Seleccione-</option>
+              {% for parentesco in parentescos %}
+                {% if parentesco.estado_par == 1 %}
+                <option value="{{ parentesco.id_par }}">{{ parentesco.nombre_par }}</option>
+                {% endif %}
+              {% endfor %}
+            </select>
+          </div>
+          <div class="col-sm-2" id="grupo__nombre">
+            <label for="exampleFormControlInput1" class="form-label">Nombre Familiar</label>
+            <abbr class='fas fa-question-circle' title="Nombre del familiar del trabajador"></abbr>
+            <input type="text" class="text-uppercase form-control" name="nombre_fam" id="nombre" autofocus
+              placeholder="" required>
+            <i class="formulario__validacion-estado fas fa-times-circle"></i>
+            <p class="formulario__input-error">El campo solo puede contener letras</p>
+          </div>
+
+          <div class="col-sm-2" id="grupo__apellidoP">
+            <label for="exampleFormControlInput1" class="form-label">Apellido Familiar</label>
+            <abbr class='fas fa-question-circle' title="Apellidos del familiar del trabajador."></abbr>
+            <input type="text" class="text-uppercase form-control" name="apellidoP_fam" id="apellidoP" placeholder="">
+            <i class="formulario__validacion-estado fas fa-times-circle"></i>
+            <p class="formulario__input-error">El campo solo puede contener letras</p>
+          </div>
+          <div class="col-sm-2" id="grupo__telefono">
+            <label for="exampleFormControlInput1" class="form-label">Telf- Familiar</label>
+            <input type="number" class="text-uppercase form-control" name="telef_fam" id="telefono" placeholder="">
+            <i class="formulario__validacion-estado fas fa-times-circle"></i>
+            <p class="formulario__input-error">El campo solo puede contener numeros max 9 caracteres</p>
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-sm-12">
+            <label for="exampleFormControlInput1" class="form-label">Nota</label>
+            <input type="text" class="text-uppercase form-control" name="nota_fam" placeholder="">
+          </div>
+        </div>
+
+        <br>
+        <!-- creacion de los botones de registro -->
+        <div class="row">
+          <div class="col-md-6">
+            <button type="submit" style="float: right" class="btn btn-primary btn-sm"><i
+                class="fas fa-check fa-sm"></i>Guardar
+            </button>
+          </div>
+
+          <div class="col-md-6">
+            <a class="btn btn-dark btn-sm " href="{% url 'famLista' %}"><i
+                class="fas fa-arrow-left fa- sm"></i>Volver</a>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

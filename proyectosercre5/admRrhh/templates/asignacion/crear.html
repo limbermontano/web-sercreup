@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% block encabezado %}Gestion asignacion{% endblock %}
+{% block encabezadofor %} Formulario de registro {% endblock %}
+{% block contenido %} 
+<div class="card shadow mb-2">
+  <div class="container py-2">
+    <div class="row justify-content-center">
+      <form action="{% url 'asigGuardar' %}" id="formulario6" method="POST">
+        {% csrf_token %}
+        <div class="row">
+          <div class="col-sm-4">
+            <label for="exampleFormControlInput1" class="form-label">Proyecto</label>
+                <select  name="proyecto_asig" id="inputproyecto_asig"   class="form-control" required>
+                    <option value="">-Seleccione-</option>
+                  {% for proyecto in proyectos_no_encontrados %}
+                    <option value="{{ proyecto.id_proy }}">{{ proyecto.nombre_proy }} </option>
+                  {% endfor %}
+                </select>
+          </div>
+          <div class="col-sm-4">
+            <label class="form-label">Cargo personal</label>
+            <abbr class='fas fa-question-circle' title="Los cargos del personal que intervienen en el proyecto."></abbr>
+            <select name="proyecto" id="cargo" class="form-control" required>
+                <option value="">Seleccione el cargo</option>
+                {% for cargo in cargos %}
+                    <option value="{{ cargo.id_carg }}">{{ cargo.nombre_carg }}</option>
+                {% endfor %}
+            </select>
+          </div>
+          <div class="col-sm-4">
+            <label class="form-label">Personal</label>
+            <abbr class='fas fa-question-circle' title="Seleccione cargo para que muestre el personal que intervendra en el proyecto."></abbr>
+            <select name="personal_asig" id="personal" class="form-control" disabled>
+            </select>
+          </div>
+          
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-sm-3">
+            <label for="exampleFormControlInput1" class="form-label">Fecha Inicio</label>
+            <input type="date" class="text-uppercase form-control" name="fechaIni_asig" placeholder=""required>
+          </div>
+          <div class="col-sm-3">
+            <label for="exampleFormControlInput1" class="form-label">Fecha Fin</label>
+            <input type="date" class="text-uppercase form-control" name="fechaFin_asig" placeholder="">
+          </div>
+          <div class="col-sm-6"id="grupo__nota">
+            <label for="exampleFormControlInput1" class="form-label">Nota/observacion</label>
+            <input type="text" class="text-uppercase form-control" name="nota_asig" id="nota" placeholder="S/N">
+            <i class="formulario__validacion-estado fas fa-times-circle"></i>
+            <p class="formulario__input-error">El campo solo puede contener maximo 70 caracteres</p> 
+          </div>
+        </div> 
+        <br>
+        <div class="row">
+          <div class="col-md-6">
+            <button type="submit" style="float: right" class="btn btn-primary btn-sm"><i class="fas fa-check fa-sm"></i>Guardar
+            </button>
+          </div>
+        
+          <div class="col-md-6">
+                <a class="btn btn-dark btn-sm " href="{% url 'asigLista' %}"><i class="fas fa-arrow-left fa- sm"></i>Volver</a>
+          </div>
+        </div>
+        <script>
+          document.addEventListener('DOMContentLoaded', () => {
+              const cargos = document.querySelector('#cargo');
+              cargos.addEventListener('change', () => {
+                  const personalSelect = $('#personal');
+                  personalSelect.empty();
+                  let valorOption = cargos.value;
+      
+                  var optionSelect = cargos.options[cargos.selectedIndex];
+      
+                  console.log("Opción seleccionada:", optionSelect.text);
+                  console.log("Valor seleccionado:", optionSelect.value);
+      
+                  const capa = document.querySelector('#capaResultado');
+                  if (valorOption) {
+                      {% for personal in personales %}
+                          console.log('Comparando:', '{{ personal.cargo_perl_id }}', 'con', valorOption);
+                          if ('{{ personal.cargo_perl_id }}' == valorOption) {
+                              console.log('Persona agregado:', '{{ personal.id_perl }}');
+                              personalSelect.prop('disabled', false).append(`<option value="{{ personal.id_perl }}">{{ personal.persona_perl.nombre_per }} {{ personal.persona_perl.apellidoP_per }}</option>`);
+                          }
+                      {% endfor %}
+                      // Aplica Select2 al segundo select después de agregar opciones
+                      personalSelect.select2();
+                  } else {
+                      personalSelect.prop('disabled', true);
+                  }
+              });
+          });
+        </script>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock  %}

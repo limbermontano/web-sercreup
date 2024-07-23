@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% block encabezado %}Gestion envio{% endblock %}
+{% block encabezadofor %} Formulario de edicion {% endblock %}
+{% block contenido %}
+<div class="card shadow mb-2">
+  <!-- creacion del container para la entrada de datos -->
+  <div class="container p-2 my-2 border">
+    <div class="row justify-content-center">
+      <form action="{% url 'envActualizar' codigo.id_env %}"id="formulario6" method="POST">
+        {% csrf_token %}
+        <div class="row">
+          <div class="col-sm-4">
+            <label for="exampleFormControlInput1" class="form-label">Proyecto</label>
+                <select  name="proyecto_id"   class="form-control" required>
+                
+
+                    {% for proyecto in proyectos %}
+                      {% if proyecto.id_proy == codigo.proyecto_env_id %}
+                      <option value="{{ proyecto.id_proy }}">{{ proyecto.nombre_proy }}</option>
+                      {% endif %}
+                    {% endfor %}
+
+                </select>
+          </div>
+        
+          <div class="col-sm-3">
+            <label for="exampleFormControlInput1" class="form-label">Fecha envio</label>
+            <input type="date" class="text-uppercase form-control" name="fechaEnv_env" value="{{ codigo.fechaEnv_env}}" placeholder=""required>
+          </div>
+          <div class="col-sm-5" id="grupo__nota">
+            <label class="form-label">Nota/observacion</label>
+            <input type="text" maxlength="70" title="Maximo 70 caracteres" class="text-uppercase form-control" name="nota_env" id="nota" value="{{ codigo.nota_env}}" placeholder="">
+            <i class="formulario__validacion-estado fas fa-times-circle"></i>
+            <p class="formulario__input-error">El campo solo puede contener maximo 70 caracteres</p> 
+          </div>
+        </div>
+        <br> 
+        <div class="card"style="box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);padding: 10px; border: 1px solid black;">
+          <p><b>Respaldo de documentos</b></p>
+          <div class="row"style="margin-bottom: 10px;">
+            <div class="col-sm-4">
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" name="cronograma" value="1"  {% if codigo.cronograma_env|yesno:"yes,no" == "yes" %}checked{% endif %}>
+                <label class="form-check-label" for="inlineCheckbox1">Cronograma</label>
+              </div>
+            </div>
+            <br>
+            <div class="col-sm-4">
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" name="estacado" value="1"  {% if codigo.estacado_env|yesno:"yes,no" == "yes" %}checked{% endif %}>
+                <label class="form-check-label" for="inlineCheckbox2">Hoja-Estacado</label>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" name="plano" value="1"  {% if codigo.plano_env|yesno:"yes,no" == "yes" %}checked{% endif %}>
+                <label class="form-check-label" for="inlineCheckbox3">Plano</label>
+              </div>
+            </div>
+          </div>
+          <div class="row"style="margin-bottom: 10px;">
+            <div class="col-sm-4">
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" name="punto" value="1"  {% if codigo.puntoPunto_env|yesno:"yes,no" == "yes" %}checked{% endif %}>
+                <label class="form-check-label" for="inlineCheckbox4">Punto a punto</label>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" name="mano" value="1"  {% if codigo.manoObra_env|yesno:"yes,no" == "yes" %}checked{% endif %}>
+                <label class="form-check-label" for="inlineCheckbox5">Mano de obra</label>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" name="respaldo" value="1"  {% if codigo.resplado_env|yesno:"yes,no" == "yes" %}checked{% endif %}>
+                <label class="form-check-label" for="inlineCheckbox6">Respaldo</label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <br>
+        <br>
+        <!-- creacion de los botones de registro -->
+        <div class="row">
+          <div class="col-md-6">
+            <button type="submit" style="float: right" class="btn btn-primary btn-sm"><i class="fas fa-check fa-sm"></i>Guardar
+            </button>
+          </div>
+          <div class="col-md-6">
+                <a class="btn btn-dark btn-sm " href="{% url 'envLista' %}"><i class="fas fa-arrow-left fa- sm"></i>Volver</a>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

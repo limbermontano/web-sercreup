@@ -1,0 +1,85 @@
+
+{% block contenido %}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <style>
+    body {
+        
+        font-family: Arial, sans-serif;
+        background-color: #d91212;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+    }
+
+    .login-container {
+        background-color: #fff;
+        padding: 10px 10px;
+        border-radius: 20px;
+        box-shadow: 7px 7px 17px #3b4456,
+        -7px -7px 17px #4f5c74;
+        width: 400px;
+        text-align: center;
+        border: 0.5px solid #313b4e;
+    }
+
+    h2 {
+        color: #333;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 8px;
+        color: #555;
+    }
+
+    input {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 16px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    button {
+        background-color: #4CAF50;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    button:hover {
+        background-color: #45a049;
+    }
+    
+    </style>
+<main class="form-signin w-100 m-auto">
+    <div class="login-container">
+        <img src="/static/img/logosercre.png " class="img-fluid border-radius-lg" style="width: 70%" />
+        <br>
+        <h2>Iniciar Sesión</h2>
+        <div class="row">
+            <div class="col-sm-12">
+                <form action="{% url 'login' %}" method="POST">
+                    {% csrf_token %}
+                    <img src="/static/img/user-login.png" class="img-fluid border-radius-lg" style="width: 10%" />
+                    <label for="username"> Nombre de usuario</label>
+                    <input type="text" id="" name="username" required>
+                    <img src="/static/img/candado.jpg" class="img-fluid border-radius-lg" style="width: 10%" />
+                    <label for="password" class="fas fa-lock">Contraseña</label>
+                    <input type="password" id="" name="password" required>
+
+                    <button type="submit" aria-label="Iniciar Sesión">Iniciar Sesión</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</main> 
+
+{% endblock %}

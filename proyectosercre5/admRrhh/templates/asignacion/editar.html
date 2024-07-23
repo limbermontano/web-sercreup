@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block encabezado %}Gestion asignacion{% endblock %}
+{% block encabezadofor %} Formulario de edicion {% endblock %}
+{% block contenido %}
+
+<div class="card shadow mb-4">
+  <!-- creacion del container para la entrada de datos -->
+  <div class="container">
+    <div class="row justify-content-center">
+      <form action="{% url 'asigActualizar' codigo.id_asig %}" id="formulario6"  method="POST">
+        {% csrf_token %}
+        <div class="row">
+          <div class="col-sm-3">
+            <label for="exampleFormControlInput1" class="form-label">Proyecto</label>
+                <select  name="proyecto_asig"   class="form-control" required>
+                {% for proyecto in proyectos %}
+                  {% if proyecto.id_proy == codigo.proyecto_asig_id %}
+                      <option value="{{ proyecto.id_proy }}">{{ proyecto.nombre_proy }} </option>
+                    {% for proyecto in proyectos_no_encontrados %}
+                      <option value="{{ proyecto.id_proy }}">{{ proyecto.nombre_proy }} </option>
+                    {% endfor %}
+
+                    
+                  {% endif %}    
+                {% endfor %}   
+                </select>
+          </div>
+          <div class="col-sm-3">
+            <label for="exampleFormControlInput1" class="form-label">Personal</label>
+                <select  name="personal_asig"   class="form-control" required>
+                {% for personal in personales %}
+                  {% if personal.id_perl == codigo.personal_asig_id %}
+                    {% for persona in personas %}
+                      {% if personal.persona_perl_id == persona.id_per %} 
+                          <option value="{{ persona.id_per }}">{{ persona.nombre_per }} {{persona.apellidoP_per }}</option>
+                        {% for personal in personales %}
+                          {% if personal.estado_perl == 1 %}
+                            {% for persona in personas %}
+                              {% if personal.id_perl == persona.id_per%} 
+                                <option value="{{ persona.id_per }}">{{ persona.nombre_per }} {{persona.apellidoP_per }}</option>
+                                </option>
+                              {% endif %}
+                            {% endfor %}
+                          {% endif %}
+                        {% endfor %}
+                      {% endif %}
+                    {% endfor %}
+                  {% endif %}
+                {% endfor %}
+                </select>
+          </div>
+          <div class="col-sm-3">
+            <label for="exampleFormControlInput1" class="form-label">Fecha Inicio.</label>
+            <input type="date" class="text-uppercase form-control" name="fechaIni_asig" value="{{codigo.fechaIni_asig}}"placeholder=""required>
+          </div>
+          <div class="col-sm-3">
+            <label for="exampleFormControlInput1" class="form-label">Fecha Fin</label>
+            <input type="date" class="text-uppercase form-control" name="fechaFin_asig" value="{{codigo.fechaFin_asig}}"placeholder="">
+          </div>
+          <div class="col-sm-12"id="grupo__nota">
+            <label for="exampleFormControlInput1" class="form-label">Nota/observacion</label>
+            <input type="text" class="text-uppercase form-control" name="nota_asig" id="nota" value="{{codigo.nota_asig}}"placeholder="S/N">
+            <i class="formulario__validacion-estado fas fa-times-circle"></i>
+            <p class="formulario__input-error">El campo solo puede contener maximo 70 caracteres</p> 
+          </div>
+        </div> 
+        <br>
+        <div class="row">
+          <div class="col-md-6">
+            <button type="submit" style="float: right" class="btn btn-primary btn-sm"><i class="fas fa-check fa-sm"></i>Guardar
+            </button>
+          </div>
+        
+          <div class="col-md-6">
+                <a class="btn btn-dark btn-sm " href="{% url 'asigLista' %}"><i class="fas fa-arrow-left fa- sm"></i>Volver</a>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

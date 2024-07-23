@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block encabezado %}Gestion usuarios{% endblock %}
+{% block encabezadofor %} Formulario de registro {% endblock %}
+
+{% block contenido %} 
+  <div class="card shadow mb-2">
+    <div class="container py-2">
+      <div class="row justify-content-center">
+        <form action="{% url 'usuGuardar' %}" id="formulario10" method="POST">
+          {% csrf_token %}
+          <div class="row">
+            <div class="col-sm-4">
+              <label for="exampleFormControlInput1" class="form-label">Usuario</label>
+              <select name="persona_usu"  class="form-control" required >
+              <option value="">-Seleccione-</option>
+                  {% for personal in personales %}
+                    
+                    <option value="{{personal.persona_perl.nombre_per }} {{personal.persona_perl.apellidoP_per }} ">{{personal.persona_perl.nombre_per }} {{personal.persona_perl.apellidoP_per }}</option>
+                    
+                  {% endfor %}
+              </select>
+            </div> 
+            <div class="col-sm-4">
+              <label  class="form-label">Password</label>
+              <i class="far fa-eye-slash" id="togglePassword"></i>
+              <input type="password" class="form-control" name="password_usu" id="password" placeholder="">
+            </div>
+            <div class="col-sm-4"id="grupo__usuario">
+              <label  class="form-label">E-mail</label>
+              <input type="email"  class="form-control" name="mail_usu" id="usuario" placeholder="name@example.com"required>
+              <i class="formulario__validacion-estado fas fa-times-circle"></i>
+              <p class="formulario__input-error">El campo solo puede contener direccion de E-mail</p>
+            </div>
+          </div>
+          <br>
+          <div class="card" style="box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);padding: 10px; border: 1px solid black;">
+            <p><b>Nivel total de acceso al sistema</b></p>
+            <div class="row" style="margin-bottom: 10px;">
+              <div class="col-sm-4">
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" name="super_usu" value="1">
+                  <label class="form-check-label" for="inlineCheckbox1">Super Usuario</label>
+                  <abbr class='fas fa-question-circle' title="Usuario con privilegios y permisos para todo el sistema."></abbr>
+                </div>
+              </div>
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-md-6">
+              <button type="submit" style="float: right" class="btn btn-primary btn-sm"><i class="fas fa-check fa-sm"></i>Guardar
+              </button>
+            </div>
+            <div class="col-md-6">
+                  <a class="btn btn-dark btn-sm " href="{% url 'usuLista' %}"><i class="fas fa-arrow-left fa- sm"></i>Volver</a>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <script>
+    const togglePassword = document.querySelector('#togglePassword');
+    const password = document.querySelector('#password');
+
+    togglePassword.addEventListener('click', function (e) {
+        // Toggle the type attribute
+        const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+        password.setAttribute('type', type);
+
+        // Toggle the eye icon
+        this.querySelector('i').classList.toggle('fa-eye');
+        this.querySelector('i').classList.toggle('fa-eye-slash');
+    });
+  </script>
+{% endblock  %}

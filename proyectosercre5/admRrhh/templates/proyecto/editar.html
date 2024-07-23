@@ -1,0 +1,219 @@
+{% extends "base.html" %}
+{% block encabezado %}Gestion proyecto{% endblock %}
+{% block encabezadofor %} Formulario de edicion {% endblock %}
+{% block contenido %}
+<div class="card shadow mb-2">
+  <div class="container py-2">
+    <div class="row justify-content-center">
+      <form action="{% url 'proyActualizar' codigo.id_proy %}" id="formulario7"  method="POST">
+        {% csrf_token %}
+        <div class="row">
+          <div class="col-sm-2">
+              <label for="exampleFormControlInput1" class="form-label">Fiscal</label>
+              <select  name="fiscal_proy" id="inputfiscal_proy"  autofocus class="form-control" required>
+                  {% for fiscal in fiscales %}
+                    {% if fiscal.id_fis == codigo.fiscal_proy_id %}
+                      <option value="{{ fiscal.id_fis }}">{{ fiscal.nombre_fis }} {{ fiscal.apellidoP_fis }}</option>
+                      {% for fiscal in fiscales %}
+                        {% if fiscal.estado_fis == 1 %}
+                          <option value="{{ fiscal.id_fis }}">{{ fiscal.nombre_fis }} {{ fiscal.apellidoP_fis }}</option>
+                        {% endif %}    
+                      {% endfor %}  
+                    {% endif %} 
+                  {% endfor %}
+              </select>
+          </div>
+         
+          <div class="col-sm-2"id="grupo__proyecto">
+            <label for="exampleFormControlInput1" class="form-label">Proyecto</label>
+            <input type="text" class="text-uppercase form-control" name="nombre_proy" id="proyecto" value="{{ codigo.nombre_proy}}" placeholder=""required>
+            <i class="formulario__validacion-estado fas fa-times-circle"></i>
+            <p class="formulario__input-error">11 caracteres menos simbolos y espacios</p>
+          </div>
+          <div class="col-sm-2"id="grupo__grafo">
+            <label for="exampleFormControlInput1" class="form-label">Grafo</label>
+            <abbr class='fas fa-question-circle' title="Numero unico de registro que el cliente CRE., lo crea."></abbr>
+            <input type="text" class="text-uppercase form-control" name="grafo_proy" id="grafo" value="{{ codigo.grafo_proy}}" placeholder=""required>
+            <i class="formulario__validacion-estado fas fa-times-circle"></i>
+            <p class="formulario__input-error">El campo solo puede contener números</p>
+          </div>
+          <div class="col-sm-2"id="grupo__trafo">
+            <label for="exampleFormControlInput1" class="form-label">Transformador de Ref.</label>
+            <abbr class='fas fa-question-circle' title="Es la placa de los transformadores de luz que tienen como referencia el municipo y la Uv. en la que se encuentran instalados."></abbr>
+            <input type="text" class="text-uppercase form-control" name="trafo_proy" id="trafo"  value="{{ codigo.trafo_proy}}"placeholder="">
+            <i class="formulario__validacion-estado fas fa-times-circle"></i>
+            <p class="formulario__input-error">El campo solo puede contener máximo 16 dígitos</p>
+          </div>
+          <div class="col-sm-2">
+            <label for="exampleFormControlInput1" class="form-label">Fecha Creacion</label>
+            <abbr class='fas fa-question-circle' title="Es la fecha de creacion del proyecto por parte del cliente CRE."></abbr>
+            <input type="date" class="text-uppercase form-control" name="fechaRecep_proy" value="{{ codigo.fechaRecep_proy}}"placeholder=""required>
+          </div>
+          <div class="col-sm-2">
+            <label for="exampleFormControlInput1" class="form-label">Fecha Diseño</label>
+            <abbr class='fas fa-question-circle' title="Es la fecha Limite que genera el cliente CRE. Para su diseño del proyecto."></abbr>
+            <input type="date" class="text-uppercase form-control" name="fechaDisen_proy" value="{{ codigo.fechaDisen_proy}}"placeholder=""required>
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-sm-2">
+            <label for="exampleFormControlInput1" class="form-label">Fecha Construccion.</label>
+            
+            <input type="date" class="text-uppercase form-control" name="fechaConst_proy" value="{{ codigo.fechaConst_proy}}"placeholder=""required>
+          </div>
+          <div class="col-sm-5">
+            <label for="exampleFormControlInput1" class="form-label">Nota.</label>
+            
+            <input type="text" class="text-uppercase form-control" name="nota_proy" value="{{ codigo.nota_proy}}"placeholder="">
+          </div>
+          <div class="col-sm-5" id="grupo__direccion">
+            <label for="exampleFormControlInput1" class="form-label">Ubicacion</label>
+            
+            <input type="text" class="text-uppercase form-control" name="ubicacion_proy" id="direccion" value="{{ codigo.ubicacion_proy}}"placeholder=""required>
+            <i class="formulario__validacion-estado fas fa-times-circle"></i>
+            <p class="formulario__input-error">El campo solo puede contener máximo 100 caracteres</p>
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-md-12">
+            <button type="submit" style="float: right" class="btn btn-primary btn-sm"><i class="fas fa-check fa-sm"></i>Guardar
+            </button>
+          </div>
+          
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<br>
+<p><b>Formulario de Asignacion de proyectos</b></p>
+<hr style="background-color: red">
+<!--segundo formulario asignacion-->
+<form action="{% url 'asigGuardetalle' %}" id="formulario6" method="POST">
+  {% csrf_token %}
+  <div class="row">
+    <div class="col-sm-2">
+      <label class="form-label">Cargo personal</label>
+      <abbr class='fas fa-question-circle' title="Los cargos del personal que intervienen en el proyecto."></abbr>
+      <select name="proyecto" id="cargo" class="form-control" required>
+          <option value="">Seleccione el cargo</option>
+          {% for cargo in cargos %}
+              <option value="{{ cargo.id_carg }}">{{ cargo.nombre_carg }}</option>
+          {% endfor %}
+      </select>
+    </div>
+  <div class="col-sm-2">
+      <label class="form-label">Personal</label>
+      <abbr class='fas fa-question-circle' title="Seleccione cargo para que muestre el personal que intervendra en el proyecto."></abbr>
+      <select name="personal_asig" id="personal" class="form-control">
+      </select>
+  </div>
+    
+     
+    <div class="col-sm-3">
+      <label for="exampleFormControlInput1" class="form-label">Fecha Inicio-Asiganacion.</label>
+      <abbr class='fas fa-question-circle' title="Fecha de inicio para realizacin de proyecto segun su cargo del personal."></abbr>
+      <input type="date" class="text-uppercase form-control" name="fechaIni_asig" placeholder=""required>
+    </div>
+    
+    <div class="col-sm-5" id="grupo__nota">
+      <label for="exampleFormControlInput1" class="form-label">Nota/observacion</label>
+      <input type="text" class="text-uppercase form-control" name="nota_asig" id="nota" placeholder="S/N">
+      <i class="formulario__validacion-estado fas fa-times-circle"></i>
+      <p class="formulario__input-error">El campo solo puede contener máximo 70 caracteres</p>
+    </div>
+  </div>
+  <input type="text" class="text-uppercase form-control" name="proyecto_asig" value="{{ codigo.id_proy}}" style="display: none;">
+    <br>
+  <div class="row">
+    <div class="col-md-12">
+      <a class="btn btn-dark btn-sm "style="float: right"  href="{% url 'proyLista' %}"><i class="fas fa-arrow-left fa- sm"></i>Volver</a>
+      <button type="submit" style="float: right"class="btn btn-success btn-sm mx-1"><i class="fas fa-check fa-sm"></i>Asignar
+      </button>
+      <a
+      class="btn btn-danger btn-sm"
+      style="float: right"
+      href="{% url 'export-pdf1' codigo.id_proy  %}" target="_blank"
+      ><i class="fas fa-file-pdf"></i> PDF</a
+      >
+    </div>
+  </div> 
+  <br>
+  <table class="table table-striped"
+  id="dataTable"
+  width="100%"
+  cellspacing="0"
+  >
+    <thead>
+      <tr>
+        <th>Proyecto</th>
+        <th>Ubicacion</th>
+        <th>Personal</th>
+        <th>Cargo</th>
+        <th>Fecha inicio</th>
+        <th>Nota</th>
+        <th  style="text-align: right;">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for asignacion in asignaciones %}
+          {% if asignacion.estado_asig == 1 %}
+            {% for proyecto in proyectos %}
+              {% if proyecto.id_proy == asignacion.proyecto_asig_id and proyecto.nombre_proy == codigo.nombre_proy  %}
+                  <tr>
+                    <td>{{proyecto.nombre_proy}}</td>
+                    <td>{{proyecto.ubicacion_proy}}</td>
+                    <td>{{asignacion.personal_asig.persona_perl.nombre_per}} {{asignacion.personal_asig.persona_perl.apellidoP_per}}</td>
+                    <td>{{asignacion.personal_asig.cargo_perl.nombre_carg}}</td>
+                    <td>{{asignacion.fechaIni_asig}}</td>
+                    <td>{{asignacion.nota_asig }}</td>
+                    <td style="float: right">
+                      <form method="post" id="formulario6" action="{% url 'asigEliminarD' asignacion.id_asig %}">
+                        {% csrf_token %}
+                        
+                        <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                        
+                      </form>
+                    </td>
+                  </tr>
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+        {% endfor %}
+    </tbody>
+  </table>
+</form>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+      const cargos = document.querySelector('#cargo');
+      cargos.addEventListener('change', () => {
+          const personalSelect = $('#personal');
+          personalSelect.empty();
+          let valorOption = cargos.value;
+
+          var optionSelect = cargos.options[cargos.selectedIndex];
+
+          console.log("Opción seleccionada:", optionSelect.text);
+          console.log("Valor seleccionado:", optionSelect.value);
+
+          const capa = document.querySelector('#capaResultado');
+          if (valorOption) {
+              {% for personal in personales %}
+                  console.log('Comparando:', '{{ personal.cargo_perl_id }}', 'con', valorOption);
+                  if ('{{ personal.cargo_perl_id }}' == valorOption) {
+                      console.log('Persona agregado:', '{{ personal.id_perl }}');
+                      personalSelect.prop('disabled', false).append(`<option value="{{ personal.id_perl }}">{{ personal.persona_perl.nombre_per }} {{ personal.persona_perl.apellidoP_per }}</option>`);
+                  }
+              {% endfor %}
+              // Aplica Select2 al segundo select después de agregar opciones
+              personalSelect.select2();
+          } else {
+              personalSelect.prop('disabled', true);
+          }
+      });
+  });
+</script>
+
+{% endblock %}

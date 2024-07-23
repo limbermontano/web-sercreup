@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block encabezado %}Gestion usuario{% endblock %}
+{% block encabezadofor %} Formulario de edicion {% endblock %}
+{% block contenido %}
+<div class="card shadow mb-2">
+  <div class="container py-2">
+    <div class="row justify-content-center">
+      <form action="{% url 'usuActualizar' codigo.id %}" method="POST">
+        {% csrf_token %}
+        <div class="row">
+          <div class="col-sm-2">
+            <label for="exampleFormControlInput1" class="form-label">Persona</label>
+            <select name="persona_usu" id="inputpersona_usu" class="form-control" required >
+              {% for usuario in usuarios %}
+                {% if usuario.id == codigo.id %}
+                  {% for persona in personas %}
+                    {% if persona.nombre_per == codigo.username %}
+                    <option value="{{ persona.nombre_per }}">{{ persona.nombre_per }} {{persona.apellidoP_per }}</option>
+                        {% for persona in personas %}
+                          {% if persona.estado_per == 1 %}
+                          <option value="{{ persona.nombre_per }}">{{ persona.nombre_per }} {{persona.apellidoP_per }}</option>
+                          {% endif %} 
+                        {% endfor %}
+                    {% endif %} 
+                  {% endfor %}
+                {% endif %} 
+              {% endfor %}
+            </select>
+          </div>
+          <div class="col-sm-2">
+            <label  class="form-label">Password</label>
+
+            <input type="text" class="form-control" name="contrasena_usu"value="{{ codigo.password }}" placeholder=""required>
+          </div>
+        
+          <div class="col-sm-2">
+            <label for="exampleFormControlInput1" class="form-label">Super_usuario</label>
+            <abbr class='fas fa-question-circle' title="Permite tener acceso a todas las opciones de registro que se crea."></abbr>
+            <input type="number"  class="text-uppercase form-control" name="super_usu" value="{{ codigo.is_superuser  }}" placeholder="">
+          </div>
+            
+            
+        
+          <div class="col-sm-4">
+            <label  class="form-label">E-mail</label>
+            <input type="email"  class="form-control" name="mail_usu" value="{{ codigo.email }}"  placeholder="name@example.com">
+          </div>
+
+          <div class="col-sm-2">
+            <label for="exampleFormControlInput1" class="form-label">Staff</label>
+            <abbr class='fas fa-question-circle' title="Permite visualizar todas las opciones de registro que se crea."></abbr>
+            <input type="number"  class="text-uppercase form-control" name="staff_usu" value="{{ codigo.is_staff }}"  placeholder="">
+          </div>
+       
+        </div>
+        <br>
+        
+        <br>
+        <div class="row">
+          <div class="col-md-6">
+            <button type="submit" style="float: right" class="btn btn-primary btn-sm"><i class="fas fa-check fa-sm"></i>Guardar
+            </button>
+          </div>
+          <div class="col-md-6">
+                <a class="btn btn-dark btn-sm " href="{% url 'usuLista' %}"><i class="fas fa-arrow-left fa- sm"></i>Volver</a>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

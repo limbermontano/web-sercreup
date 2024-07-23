@@ -1,0 +1,111 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+
+    table{
+      border: 1px solid #999;
+      border-collapse: collapse;
+
+    }
+    @media (max-width: 600px) {
+        th {
+            font-size: 10px; /* Ajusta el tamaño de la fuente para pantallas más pequeñas */
+        }
+    }
+    </style>
+    <title>Reportes</title>
+</head>
+<body>
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col-sm-6">
+        <p style="text-align: left;"><img src="/static/img/logosercre.png" class="img" alt="" width="195" height="68"></p>
+        
+      </div>
+      <div style="text-align: right;">
+        <p>Santa Cruz de la Sierra: {{ datofech|date:" D d M Y " }}</p>
+      </div>
+    </div>
+  </div>
+  <h1 style="text-align: center"><b>REPORTE DE PROYECTOS POR ETAPAS</b></h1>
+   <p >Hora {{ datofech|date:"H:i:s" }}</p>
+   <p>Usuario: {{ user.username }}</p>
+  <div class="row">
+    <div class="card-body">
+      <table>
+        <thead>
+          <tr style=" height: 30px;">
+            <th  style="width: 11.9095%;">Proyecto</th>
+            <th  style="width: 19.5866%;">Ubicacon</th>
+            <th style="width: 9.54724%;">Fiscal</th>
+            <th  style="width: 13.878%;">Sistema</th>
+            <th style="width: 14.0748%;">Fecha de asignacion</th>
+            <th style="width: 10.7283%;">Asignacion actual</th>
+            <th  style="width: 20.27564%;">Observaciones</th>
+          </tr>
+          
+        </thead >
+        <tbody style="text-align: center; height: 40px;">
+
+          {% for proyecto in asignaciones_inicio %}
+          <tr>
+              <td>{{ proyecto.nombre_proy}}</td>
+              <td>{{ proyecto.ubicacion_proy}}</td>
+              <td>{{ proyecto.fiscal_proy.nombre_fis}} {{ proyecto.fiscal_proy.apellidoP_fis}}</td>.
+              <td>{{ proyecto.fiscal_proy.zona_fis.nombre_zon}}</td>
+              <td>{{ proyecto.fechaRecep_proy}}</td>
+              <td>Inicio </td>
+              <td>{{ proyecto.nota_proy}}</td>
+          </tr>
+        {% endfor %}
+        {% for asignacion in asignaciones_estacado %}
+          <tr>
+              <td>{{ asignacion.proyecto_asig.nombre_proy }}</td>
+              <td>{{ asignacion.proyecto_asig.ubicacion_proy}}</td>
+              <td>{{ asignacion.proyecto_asig.fiscal_proy.nombre_fis}} {{ asignacion.proyecto_asig.fiscal_proy.apellidoP_fis}}</td>
+              <td>{{ asignacion.proyecto_asig.fiscal_proy.zona_fis.nombre_zon }}</td>
+              <td>{{ asignacion.fechaIni_asig }}</td>
+              <td>{{ asignacion.personal_asig.cargo_perl.nombre_carg }}</td>
+              <td>{{ asignacion.nota_asig }}</td>
+          </tr>
+        {% endfor %}
+        {% for asignacion in asignaciones_plano  %}
+          <tr>
+              <td>{{ asignacion.proyecto_asig.nombre_proy }}</td>
+              <td>{{ asignacion.proyecto_asig.ubicacion_proy}}</td>
+              <td>{{ asignacion.proyecto_asig.fiscal_proy.nombre_fis}} {{ asignacion.proyecto_asig.fiscal_proy.apellidoP_fis}}</td>
+              <td>{{ asignacion.proyecto_asig.fiscal_proy.zona_fis.nombre_zon }}</td>
+              <td>{{ asignacion.fechaIni_asig }}</td>
+              <td>{{ asignacion.personal_asig.cargo_perl.nombre_carg }}</td>
+              <td>{{ asignacion.nota_asig }}</td>
+          </tr>
+        {% endfor %}
+        {% for asignacion in asignaciones_digitacion %}
+          <tr>
+              <td>{{ asignacion.proyecto_asig.nombre_proy }}</td>
+              <td>{{ asignacion.proyecto_asig.ubicacion_proy}}</td>
+              <td>{{ asignacion.proyecto_asig.fiscal_proy.nombre_fis}} {{ asignacion.proyecto_asig.fiscal_proy.apellidoP_fis}}</td>
+              <td>{{ asignacion.proyecto_asig.fiscal_proy.zona_fis.nombre_zon }}</td>
+              <td>{{ asignacion.fechaIni_asig }}</td>
+              <td>{{ asignacion.personal_asig.cargo_perl.nombre_carg }}</td>
+              <td>{{ asignacion.nota_asig }}</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <h5 style="text-align: center">Av. Rolando de Chazal #4443 - Tel.:3584241 - e-mail: gerencia@sercre.com.bo</h5>
+</body>
+</html>
+
+
+
+
+
+
+

@@ -1,0 +1,157 @@
+{% extends "base.html" %}
+{% block encabezado %}Gestion usuario{% endblock %}
+{% block encabezadofor %}Formulario Editar Usuario {% endblock %}
+{% block contenido %}
+
+<div class="card shadow mb-2">
+  <div class="container py-2">
+    <div class="row justify-content-center">
+      <form action="{% url 'usuActualizar' codigo.id %}" id="formulario10" method="POST">
+        {% csrf_token %}
+        <div class="row">
+          <div class="col-sm-4">
+            <label for="exampleFormControlInput1" class="form-label">Usuario</label>
+              <select  name="persona_usu"  autofocus class="form-control">
+                {% for usuario in usuarios %}
+                  {% if usuario.id == codigo.id %}
+                    <option value="{{ usuario.username}}">{{ usuario.username}}</option>
+                    {% for personal in personales %}
+                        
+                        <option value="{{personal.persona_perl.nombre_per }} {{personal.persona_perl.apellidoP_per }} ">{{personal.persona_perl.nombre_per }} {{personal.persona_perl.apellidoP_per }}</option>
+                        
+                    {% endfor %}  
+                  {% endif %}
+                {% endfor %}              
+                
+              </select>
+          </div>
+          
+          <div class="col-sm-4">
+            <label  class="form-label">Password</label>
+            <!-- <i class="far fa-eye-slash" id="togglePassword"></i> -->
+            <input type="Password"   class="form-control" name="password_usu" value="{{ codigo.password }}"  placeholder="">
+          </div>
+          <div class="col-sm-4"id="grupo__usuario">
+            <label  class="form-label">E-mail</label>
+            <input type="email"  class="form-control" name="mail_usu" id="usuario" value="{{ codigo.email }}"  placeholder="name@example.com">
+            <i class="formulario__validacion-estado fas fa-times-circle"></i>
+            <p class="formulario__input-error">El campo solo puede contener direccion de E-mail</p>
+          </div>
+        </div>
+        <br>
+        <div class="card" style="box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);padding: 10px; border: 1px solid black;">
+          <p><b>Nivel total de acceso al sistema</b></p>
+          <div class="row" style="margin-bottom: 10px;">
+            <div class="col-sm-4">
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" name="super_usu" value="1" {% if codigo.is_superuser|yesno:"yes,no" == "yes" %}checked{% endif %}>
+                <label class="form-check-label" for="inlineCheckbox1">Super Usuario</label>
+                <abbr class='fas fa-question-circle' title="Usuario con privilegios y permisos para todo el sistema."></abbr>
+              </div>
+              
+            </div>
+          </div>
+        </div>
+        <br> 
+        <div class="row">
+          <div class="col-md-6">
+            <button type="submit" style="float: right" class="btn btn-primary btn-sm"><i class="fas fa-check fa-sm"></i>Guardar
+            </button>
+            
+          </div>
+          <div class="col-md-6">
+            <a class="btn btn-dark btn-sm " href="{% url 'usuLista' %}"><i class="fas fa-arrow-left fa- sm"></i>Volver</a>
+          </div>
+        </div>
+        <br>
+      </form>
+    </div>
+  </div>
+</div>
+
+{% if codigo.is_superuser == 0 %}
+  <hr style="background-color: red">
+  <p><b>Formulario Roles</b></p>
+  <hr>
+  <!--segundo formulario asignacion-->
+    <form action="{% url 'userRolGuardar' %}" id="formulario10" method="POST">
+      {% csrf_token %}
+      <div class="row">
+        <div class="col-sm-5" id="grupo__usuario">
+          <label for="exampleFormControlInput1" class="form-label">Nombre de Rol</label>
+          <abbr class='fas fa-question-circle' title="Opcion de rol que permite el acceso a las vistas de los formularios"></abbr>
+          <select name="rol_perm" id="usuario" class="form-control"required>
+            <option value="">-Seleccione el rol-</option>
+            {% for grupo in grupos %}
+            
+            <option value="{{ grupo.name }}">{{ grupo.name  }}</option>
+            
+            {% endfor %}  
+          
+        </select>
+        <i class="formulario__validacion-estado fas fa-times-circle"></i>
+        <p class="formulario__input-error">El campo solo puede contener letras y numeros sin espacio</p> 
+        </div>
+        <input type="number" class="text-uppercase form-control" name="usuario_perm" value="{{ codigo.id}}"style="display: none;">
+        <input type="text" class="text-uppercase form-control" name="usuario_per" value="{{ codigo.username}}"style="display: none;">
+      </div> 
+        <br>
+      <div class="row">
+        <div class="col-md-12">
+          <button type="submit" style="float: right"class="btn btn-success btn-sm mx-1"><i class="fas fa-check fa-sm"></i>Asignar
+          </button>
+        </div>
+      </div>
+      <br>
+      <table class="table table-striped"
+      id="dataTable"
+      width="100%"
+      cellspacing="0"
+      >
+        <thead>
+          <tr>
+            <th>Usuario</th>
+            <th>Nombre del rol</th>
+
+            <th style="float: right">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for usuario in usuarios %}
+            {% if usuario.id == codigo.id %}
+              {% for grupo in usuario.groups.all %}
+                
+                  <tr>
+                    <td>{{usuario.username}}</td>
+                    <td>{{grupo.name }}</td>
+                    <td style="float: right">
+                      <form id="formulario10" method="post" action="{% url 'userRolEliminar' usuario.id grupo.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                      </form>
+                    </td>
+                  </tr>
+              {% endfor %}
+            {% endif %}
+          {% endfor %}
+        </tbody>
+      </table>
+    </form>
+    <script>
+      const togglePassword = document
+          .querySelector('#togglePassword');
+      const password = document.querySelector('#password');
+      togglePassword.addEventListener('click', () => {
+          // Toggle the type attribute using
+          // getAttribure() method
+          const type = password
+              .getAttribute('type') === 'password' ?
+              'text' : 'password';
+          password.setAttribute('type', type);
+          // Toggle the eye and bi-eye icon
+          this.classList.toggle('bi-eye');
+      });
+    </script>
+{% endif %}
+
+{% endblock %}

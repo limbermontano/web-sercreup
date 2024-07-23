@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block encabezado %}Gestion documento{% endblock %}
+{% block encabezadofor %} Formulario de edicion {% endblock %}
+{% block contenido %}
+<div class="card shadow mb-4">
+  <div class="container p-2 my-2 border">
+    <div class="row justify-content-center">
+      <form action="{% url 'docActualizar' codigo.id_doc %}" id="formulario1" method="POST">
+        {% csrf_token %}
+        <div class="row" id="grupo__nombre">
+          <div class="col-sm-12">
+              <label  class="form-label">Documento</label>
+              <abbr class='fas fa-question-circle' title="Ingrese el tipo de documento de identidad de la persona."></abbr>
+              <input type="text"  id="nombre" class="text-uppercase form-control" name="nombre_doc" value="{{codigo.nombre_doc}}" autofocus placeholder=""required>
+              <i class="formulario__validacion-estado fas fa-times-circle"></i>
+          </div>
+        </div>  
+        <div class="row" id="grupo__nombre">
+          <div class="col-sm-12" >
+          <p class="formulario__input-error">El campo solo puede contener letras</p>  
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-md-6">
+            <button type="submit" style="float: right" class="btn btn-primary btn-sm"><i class="fas fa-check fa-sm"></i>Guardar
+            </button>
+        </div>
+        
+        <div class="col-md-6">
+              <a class="btn btn-dark btn-sm " href="{% url 'docLista' %}"><i class="fas fa-arrow-left fa- sm"></i>Volver</a>
+        </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

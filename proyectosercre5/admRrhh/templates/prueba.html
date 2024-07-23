@@ -1,0 +1,114 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>SWB sercre</title>
+    <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+<!-- modificacion de la url-->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
+    <!-- Custom styles for this template -->
+    <link href="{% static 'css/sb-admin-2.min.css' %}" rel="stylesheet">
+    <link href="{% static 'plugins/sweetAlert2/sweetalert2.min.css' %}" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body >
+    <div id="wrapper">
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" >
+
+            <!-- Main Content -->
+
+                <div class="container">
+                    <!-- DataTales Example -->
+                    <div class="card shadow mb-8">
+
+                        <div class="card-body">
+                            {% block contenido %} {% endblock %}
+                        </div>
+                    </div>
+
+                </div>
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Limber Montaño &copy; Your Website 2024</span>
+                    </div>
+                </div>
+            </footer>
+            <!-- End of Footer -->
+        </div>
+        <!-- End of Content Wrapper -->
+    </div>
+    <!-- Bootstrap core JavaScript-->
+    <script src="{% static 'vendor/jquery/jquery.min.js'%}"></script>
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js'%}"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="{% static 'vendor/jquery-easing/jquery.easing.min.js'%}"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="{% static 'js/sb-admin-2.min.js'%}"></script>
+
+    <!-- Page level plugins -->
+    <script src="{% static 'vendor/datatables/jquery.dataTables.min.js'%}"></script>
+    <script src="{% static 'vendor/datatables/dataTables.bootstrap4.min.js'%}"></script>
+
+    <!-- Swet alerts2-->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    {% if messages %}
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                {% for message in messages %}
+                    var mensaje = '{{ message }}';
+                    var tipo = '{{ message.tags }}';
+                    // Lógica para determinar el tipo de mensaje y mostrar la alerta correspondiente
+                    if (tipo === 'success') {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Éxito',
+                            text: mensaje,
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    } else if (tipo === 'warning') {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Advertencia',
+                            text: mensaje
+                        });
+                    } else if (tipo === 'error') {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: mensaje
+                        });
+                    } else if (tipo === 'info') {
+                        Swal.fire({
+                            icon: 'info',
+                            title: 'Información',
+                            text: mensaje
+                        });
+                    } else {
+                        // Manejar otros tipos de mensajes según sea necesario
+                        console.log('Mensaje de tipo desconocido:', tipo, mensaje);
+                    }
+                {% endfor %}
+            });
+        </script>
+    {% endif %}
+</body>
+
+</html>

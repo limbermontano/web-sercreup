@@ -1,0 +1,93 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+
+
+
+    table{
+      border: 1px solid #999;
+      border-collapse: collapse;
+
+    }
+    @media (max-width: 600px) {
+        th {
+            font-size: 10px; /* Ajusta el tamaño de la fuente para pantallas más pequeñas */
+        }
+    }
+    </style>
+    <title>Reportes</title>
+</head>
+<body>
+  <p style="text-align: left;"><img src="/static/img/logosercre.png" class="img" alt="" width="102" height="68" /></p>
+  <h1 style="text-align: center"><b>REPORTE</b></h1>
+  <h3 >Santa Cruz de la Sierra: {{ datofech|date:" D d M Y " }}</h3>
+  <h3 >Hora {{ datofech|date:"H:i:s" }}</h3>
+  <h3 >{{nombre_persona}}</h3>
+  <h2><b>REPORTES DE PROYECTOS EN INICIO</b></h2>
+  <div class="row">
+    <div class="card-body">
+      <div>
+          <table >
+            <thead>
+              <tr style=" height: 30px;">
+                <th  style="width: 6.00394%;">#</th>
+                <th  style="width: 11.9095%;">Proyecto</th>
+                <th  style="width: 19.5866%;">Ubicacon</th>
+                <th style="width: 9.54724%;">Fiscal</th>
+                <th  style="width: 13.878%;">Sistema</th>
+                <th style="width: 14.0748%;">Fecha de etapa</th>
+                <th style="width: 10.7283%;">Etapa</th>
+                <th  style="width: 14.2717%;">Observaciones</th>
+              </tr>
+              
+            </thead >
+            <tbody style="text-align: center; height: 40px;">
+
+              {% for asignacion in asignaciones %}
+                {% if  asignacion.id_asig == 1 %}
+                  {% for proyecto in proyectos %}
+                    {% if  asignacion.proyecto_asig_id != proyecto.id_proy %}
+            
+                      <tr>
+                          <td>{{ forloop.counter0 }}</td>
+                          <td>{{ proyecto.nombre_proy }}</td>
+                          <td>{{ proyecto.ubicacion_proy }}</td>
+                          <td>{{ proyecto.fiscal_proy.nombre_fis}} {{ proyecto.fiscal_proy.apellidoP_fis}}</td>
+                          <td>{{ proyecto.fiscal_proy.zona_fis.nombre_zon}}</td>
+                          <td>{{ proyecto.fechaRecep_proy }}</td>
+                          <td>{{ proyecto.fechaDisen_proy }}</td>
+                          <td>{{ proyecto.fechaConst_proy}}</td>
+                          <td>Inicio</td>
+                          <td>{{ proyecto.nota_proy}}</td>
+                      </tr>
+                    {% endif %}
+                  {% endfor %}
+                {% endif %}
+              {% endfor %}
+            </tbody>
+          </table>
+          <h5 style="text-align: center">Av. Rolando de Chazal #4443 - Tel.:3584241 - e-mail: gerencia@sercre.com.bo</h5>
+        </div>
+        
+      </div>
+    </div>
+    
+  </div>
+   
+
+</body>
+</html>
+    
+    
+ 
+
+
+
+
+
+
+

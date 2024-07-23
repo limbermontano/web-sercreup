@@ -1,0 +1,92 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+
+   table{
+      border: 1px solid #999;
+      border-collapse: collapse;
+
+    }
+    @media (max-width: 600px) {
+        th {
+            font-size: 10px; /* Ajusta el tamaño de la fuente para pantallas más pequeñas */
+        }
+    }
+    </style>
+    <title>Tabla con Estilo</title>
+</head>
+<body>
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col-sm-6">
+        <p style="text-align: left;"><img src="/static/img/logosercre.png" class="img" alt="" width="195" height="68"></p>
+        
+      </div>
+      <div style="text-align: right;">
+        <p>Santa Cruz de la Sierra: {{ datofech|date:" D d M Y " }}</p>
+      </div>
+    </div>
+  </div>
+  <h1 style="text-align: center"><b>REPORTE DE PROYECTOS ENVIADOS PARA APROBACION</b></h1>
+   <p >Hora {{ datofech|date:"H:i:s" }}</p>
+   <p>Usuario: {{ user.username }}</p>
+  <div class="row">
+    <div class="card-body">
+      <div>
+          <table >
+            <thead>
+              <tr style=" height: 30px;">
+                
+                <th  style="width: 11.9095%;">Proyecto</th>
+                <th  style="width: 19.5866%;">Ubicacon</th>
+                <th style="width: 9.54724%;">Fiscal</th>
+                <th  style="width: 13.878%;">Sistema</th>
+                <th style="width: 14.0748%;">Fecha de etapa</th>
+                <th style="width: 10.7283%;">Etapa</th>
+                <th  style="width: 14.2717%;">Observaciones</th>
+              </tr>
+              
+            </thead >
+            <tbody style="text-align: center; height: 40px;">
+
+            {% for envio in envios %}
+              
+              <tr>
+                <td>{{envio.proyecto_env.nombre_proy}}</td>
+                <td>{{envio.proyecto_env.ubicacion_proy}}</td>
+                <td>{{envio.proyecto_env.fiscal_proy.nombre_fis}} {{envio.proyecto_env.fiscal_proy.apellidoP_fis}}</td>
+                <td>{{envio.proyecto_env.fiscal_proy.zona_fis.nombre_zon}}</td>
+                <td>{{envio.fechaEnv_env}}</td>
+                <td>Envio</td>
+                <td>{{envio.nota_env }}</td>
+                
+              </tr>
+
+            {% endfor %}
+            </tbody>
+          </table>
+          <h5 style="text-align: center">Av. Rolando de Chazal #4443 - Tel.:3584241 - e-mail: gerencia@sercre.com.bo</h5>
+        </div>
+        
+      </div>
+    </div>
+    
+  </div>
+   
+
+</body>
+</html>
+    
+    
+ 
+
+
+
+
+
+
+

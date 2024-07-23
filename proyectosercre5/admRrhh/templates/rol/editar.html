@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% block encabezado %}Gestion roles{% endblock %}
+{% block encabezadofor %}Editar roles{% endblock %}
+{% block contenido %}
+<div class="card shadow mb-2">
+  <div class="container py-2">
+    <div class="row justify-content-center">
+      <form action="{% url 'rolActualizar' codigo.id %}" id="formulario9" method="POST">
+        {% csrf_token %}
+        <div class="row"id="grupo__rol">
+          <div class="col-sm-12">
+            <label for="exampleFormControlInput1" class="form-label">Nombre del Rol</label>
+            <input type="text"  class="text-uppercase form-control" name="nombre_rol" id="rol" value="{{ codigo.name }}" placeholder="">
+            <i class="formulario__validacion-estado fas fa-times-circle"></i>
+            <p class="formulario__input-error">El campo solo puede contener letras y numeros sin espacio</p> 
+          </div>
+        </div>
+        <br> 
+        <div class="row">
+          <div class="col-md-8">
+            <button type="submit" style="float: right" class="btn btn-primary btn-sm"><i class="fas fa-check fa-sm"></i>Guardar
+            </button>
+          </div>
+        </div>
+        <br>
+      </form>
+    </div>
+  </div>
+</div>
+<hr style="background-color: red">
+<p><b>Rol y Permisos</b></p>
+<hr>
+<!--segundo formulario asignacion-->
+<form action="{% url 'rolPermGuardar' %}" id="formulario9" method="POST">
+  {% csrf_token %}
+  <div class="row">
+    <div class="col-sm-4"id="grupo__rol">
+      <label for="exampleFormControlInput1" class="form-label">Permisos</label>
+      <abbr class='fas fa-question-circle' title="Te permite el acceso a las vistas de los formularios"></abbr>
+      <select name="permiso_rol" id="rol" class="form-control">
+        <option value=""> Selecciona el permiso </option>
+        {% for permiso, permiso_modificado in permisos %}
+        
+         <option value="{{ permiso.codename }}">{{ permiso_modificado }}</option>
+        
+        {% endfor %}  
+   
+      </select>
+    </div>
+    <div class="col-sm-6">
+      <input type="number" class="text-uppercase form-control" name="rol_per"id="rol_id"value="{{ codigo.id }}"style="display: none;">
+      <input type="text" class="text-uppercase form-control" name="rol_perm"  value="{{ codigo.name }}"style="display: none;">
+
+    </div>
+    
+  </div> 
+    <br>
+  <div class="row">
+    <div class="col-md-12">
+      <a class="btn btn-dark btn-sm "style="float: right"  href="{% url 'rolLista' %}"><i class="fas fa-arrow-left fa- sm"></i>Volver</a>
+      <button type="submit" style="float: right; color: darkslategray;" class="btn btn-success btn-sm mx-1"><i class="fas fa-check fa-sm"></i>Asignar
+      </button>
+      
+    </div>
+  </div>
+  <br>
+  <table class="table table-striped"
+  id="dataTable"
+  width="100%"
+  cellspacing="0"
+  >
+    <thead>
+      <tr>
+        <th>Roles</th>
+        <th>Permiso seleccionado</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for grupo, permisos in grupos_y_permisos.items %}
+        {% if grupo.id == codigo.id %}
+          <tr>
+            <td>{{ grupo.name }}</td>
+            <td>
+              {% for nombre_permiso, permiso_id in permisos %}
+              <a class="btn btn-success btn-sm" href="{% url 'rolPermEliminar' grupo.id permiso_id %}"
+                style="color: darkslategray;">{{ nombre_permiso }} <i class="fas fa-trash"
+                  style="color: red;"></i></a>
+              {% endfor %}
+            </td>
+          </tr>
+        {% endif %}
+      {% endfor %}
+
+    </tbody>
+  </table>
+  
+</form>
+{% endblock %}

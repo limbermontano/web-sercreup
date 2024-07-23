@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block encabezado %}Gestion zona {% endblock %}
+{% block encabezadofor %} Formulario de edicion {% endblock %}
+{% block contenido %}
+<div class="card shadow mb-4">
+  <div class="container p-2 my-2 border">
+    <div class="row justify-content-center">
+      <form action="{% url 'zonActualizar' codigo.id_zon %}" id="formulario11" method="POST">
+        {% csrf_token %}
+        <div class="row" id="grupo__nombre">
+          <div class="col-sm-12">
+              <label  class="form-label">Zona</label>
+              <input type="text" id="nombre" class="text-uppercase form-control" name="nombre_zon" value="{{codigo.nombre_zon}}" autofocus placeholder=""required>
+              <i class="formulario__validacion-estado fas fa-times-circle"></i>
+          </div>
+        </div>
+        <div class="row" id="grupo__nombre">
+          <div class="col-sm-12" >
+          <p class="formulario__input-error">El campo solo puede contener letras</p>  
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-md-6">
+            <button type="submit" style="float: right" class="btn btn-primary btn-sm"><i class="fas fa-check fa-sm"></i>Guardar
+            </button>
+          </div>
+          <div class="col-md-6">
+                <a class="btn btn-dark btn-sm " href="{% url 'zonLista' %}"><i class="fas fa-arrow-left fa- sm"></i>Volver</a>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,293 @@
+{% extends "base.html" %} 
+{% block encabezado %}Gestion personal{% endblock %}
+{% block encabezadofor %} Formulario de registro {% endblock %}
+{% block contenido %}
+<div class="container p-3">
+  <form action="{% url 'perlGuardar' %}" id="formulario5" method="POST">
+    {% csrf_token %}
+    <div class="row">
+      <div class="col-sm-2">
+        <label for="exampleFormControlInput1" class="form-label"
+          >Persona</label
+        >
+        <select
+          name="persona_perl"
+          id="nombre"
+          class="form-control"
+          required
+        >
+          <option value="">-Seleccione-</option>
+          {% for persona in personas_no_encontradas %}
+            <option value="{{ persona.id_per }}">{{ persona.nombre_per }} {{ persona.apellidoP_per }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-sm-2" id="grupo__hijo">
+        <label for="exampleFormControlInput1" class="form-label"
+          >Cantidad-Hijos</label>
+        <input type="text" class="form-control"  name="hijos_perl" id="hijo"
+          placeholder="0" required/>
+        <i class="formulario__validacion-estado fas fa-times-circle"></i>
+        <p class="formulario__input-error">Solo puede contener 1 digito numerico</p> 
+      </div>
+      <div class="col-sm-2">
+        <label for="exampleFormControlInput1" class="form-label"
+          >Area-asignada--</label
+        >
+        <abbr style="box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);padding: 0px; border: 0.5px solid rgb(8, 165, 35);" class="fa fa-plus-circle text btn-success" title="Presiona para agregar Area" 
+          data-toggle="modal" data-target="#areaModal"> 
+        </abbr>
+        <select
+          name="area_perl"
+          id="inputarea_perl"
+          class="form-control"
+          required
+        >
+          <option value="">-Seleccione-</option>
+          {% for area in areas %} {% if area.estado_are == 1 %}
+          <option value="{{ area.id_are }}">{{ area.nombre_are }}</option>
+          {% endif %} {% endfor %}
+        </select>
+      </div>
+
+      
+      <div class="col-sm-2">
+        <label for="exampleFormControlInput1" class="form-label"
+          >Cargo-asignado--</label
+        >
+        <abbr style="box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);padding: 0px; border: 0.5px solid rgb(8, 165, 35);" class="fa fa-plus-circle text btn-success" title="Presiona para agregar Cargo" 
+          data-toggle="modal" data-target="#cargoModal"> 
+        </abbr>
+        <select
+          name="cargo_perl"
+          id="inputcargo_perl"
+          class="form-control"
+          required
+        >
+          <option value="">-Seleccione-</option>
+          {% for cargo in cargos %} {% if cargo.estado_carg == 1 %}
+          <option value="{{ cargo.id_carg }}">{{ cargo.nombre_carg }}</option>
+          {% endif %} {% endfor %}
+        </select>
+      </div>
+      <div class="col-sm-2">
+        <label for="exampleFormControlInput1" class="form-label"
+          >Nivel de Estudio</label
+        >
+        <!-- <abbr class="fa fa-plus-circle text btn-success " title="Presiona para agregar Profesion"></abbr> -->
+        <select
+          name="estudio_perl"
+          id="select3"
+          class="form-control"
+          required
+        >
+          <option value="">-Seleccione-</option>
+          {% for estudio in estudios %} {% if estudio.estado_est == 1 %}
+          <option value="{{ estudio.id_est }}">{{ estudio.nombre_est }}</option>
+          {% endif %} {% endfor %}
+        </select>
+      </div>
+      <div class="col-sm-2">
+        <label for="exampleFormControlInput1" class="form-label"
+          >Profesion-actual -- </label>
+
+        <abbr style="box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);padding: 0px; border: 0.5px solid rgb(8, 165, 35);" class="fa fa-plus-circle text btn-success" title="Presiona para agregar Profesion" 
+          data-toggle="modal" data-target="#profesionModal"> 
+        </abbr>
+        <select
+          name="profesion_perl"
+          id="select4"
+          class="form-control" disabled
+        >
+        {% for profe in profesiones %} 
+          {% if profe.id_prof == 11 %}
+            <option value="{{ profe.id_prof }}" selected>{{ profe.nombre_prof }}</option>
+          {% endif %}
+        {% endfor %}
+        {% for profe in profesiones %} 
+          {% if profe.estado_prof == 1 and profe.id_prof != 11 %}
+          <option value="{{ profe.id_prof }}">{{ profe.nombre_prof }}</option>
+          {% endif %}
+        {% endfor %}
+        </select>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-sm-2">
+        <label for="exampleFormControlInput1" class="form-label"
+          >Fecha-ingreso.</label
+        >
+        <input
+          type="date"
+          class="form-control"
+          name="fechIngre_perl"
+          placeholder=""
+          required
+        />
+      </div>
+      <div class="col-sm-2">
+        <label for="exampleFormControlInput1" class="form-label"
+          >Fecha-Nacimiento.</label
+        >
+        <input
+          type="date"
+          class="form-control"
+          name="fechNac_perl"
+          placeholder=""
+          required
+        />
+      </div>
+      <div class="col-sm-2">
+        <label for="exampleFormControlInput1" class="form-label"
+          >Vencimiento-Documento.</label
+        >
+        <input
+          type="date"
+          class="form-control"
+          name="venDoc_perl"
+          placeholder=""
+        />
+      </div>
+      <div class="col-sm-2">
+        <label for="exampleFormControlInput1" class="form-label"
+          >Licencia-conducir</label
+        >
+        <abbr class='fas fa-question-circle' title="Introduce si la persona cuenta con licencia de conducir."></abbr>
+        <select name="licCond_perl" id="select1"  class="form-control" required>
+          <option value="NO">NO</option>
+          <option value="SI">SI</option>
+        </select>
+      </div>
+      <div class="col-sm-2">
+        <label for="exampleFormControlInput1" class="form-label"
+          >Categoria-Licencia</label
+        >
+        <select name="tipoLic_perl" id="select2" class="form-control"disabled>
+          <option value="s/n">s/n</option>
+          <option value="P">P</option>
+          <option value="M">M</option>
+          <option value="A">A</option>
+          <option value="B">B</option>
+          <option value="C">C</option>
+          <option value="T">T</option>
+        </select>
+      </div>
+      <div class="col-sm-2">
+        <label for="exampleFormControlInput1" class="form-label"
+          >Vencimiento-Licencia.</label
+        >
+        <input
+          type="date"
+          class="form-control"
+          name="fechVenlic_perl" id="select5"
+          placeholder=""disabled
+        />
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-sm-2"id="grupo__ctbanco">
+        <label for="exampleFormControlInput1" class="form-label"
+          >Cuenta-Banco.</label
+        >
+      
+        <abbr class="fas fa-question-circle" title="Introduce la de cuenta del banco de la persona"></abbr>
+
+        <input
+          type="number"
+          class="text-upperlcase form-control"
+          name="ctaBanc_perl" id="ctbanco"
+          placeholder=""
+        />
+        <i class="formulario__validacion-estado fas fa-times-circle"></i>
+        <p class="formulario__input-error">El campo solo puede contener maximo 10 digitos</p> 
+      </div>
+      <div class="col-sm-2"id="grupo__nua">
+        <label for="exampleFormControlInput1" class="form-label"
+          >Cuenta-Nua.</label
+        >
+        <input
+          type="number"
+          class="text-upperlcase form-control"
+          name="nua_perl" id="nua"
+          placeholder=""
+        />
+        <i class="formulario__validacion-estado fas fa-times-circle"></i>
+        <p class="formulario__input-error">El campo solo puede contener maximo 8 digitos</p> 
+      </div>
+      <div class="col-sm-2"id="grupo__ctaAfp">
+        <label for="exampleFormControlInput1" class="form-label"
+          >Cuenta-Afp.</label
+        >
+        <select name="ctaAfp_perl" id="ctaAfp" class="form-control">
+          <option value="">-Seleccione-</option>
+          <option value="Gestora">Gestora</option>
+          <option value="Prevision">Prevision</option>
+          <option value="Futuro">Futuro</option>
+          <option value="Otros">Otros</option>
+        </select>
+      </div>
+      <div class="col-sm-2"id="grupo__seguro">
+        <label for="exampleFormControlInput1" class="form-label"
+          >N°_Seguro Afp.</label
+        >
+        <input
+          type="number"
+          class="text-upperlcase form-control"
+          name="aseg_perl" id="seguro"
+          placeholder=""
+        />
+        <i class="formulario__validacion-estado fas fa-times-circle"></i>
+        <p class="formulario__input-error">El campo solo puede contener maximo 10 digitos</p> 
+      </div>
+
+
+      <div class="col-sm-2"id="grupo__sueldo">
+        <label for="exampleFormControlInput1" class="form-label"
+          >Sueldo Bs.</label
+        >
+        <input
+          type="number"
+          class="text-upperlcase form-control"
+          name="sueldo_perl"id="sueldo"
+          placeholder=""
+          required
+        />
+        <i class="formulario__validacion-estado fas fa-times-circle"></i>
+        <p class="formulario__input-error">El campo solo puede contener maximo 4 digitos</p> 
+      </div>
+    </div>
+    <br />
+    <br />
+    <br />
+    <br />
+    <!-- creacion de los botones de registro -->
+    <div class="row">
+      <div class="col-md-6">
+        <button
+          type="submit"
+          style="float: right"
+          class="btn btn-primary btn-sm"
+        >
+          <i class="fas fa-check fa-sm"></i>Guardar
+        </button>
+      </div>
+      <div class="col-md-6">
+        <a class="btn btn-dark btn-sm" href="{% url 'perlLista' %}"
+          ><i class="fas fa-arrow-left fa- sm"></i>Volver</a
+        >
+      </div>
+    </div>
+  </form>
+</div> 
+
+<!-- Incluye el modal de área -->
+{% include 'area/areaModal.html' %}
+{% include 'cargo/cargoModal.html' %}
+{% include 'profesion/profesionModal.html' %}
+{% endblock %}
+
+
+
+

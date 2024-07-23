@@ -1,0 +1,170 @@
+{% extends "base.html" %}
+{% block encabezado %}Gestion persona{% endblock %}
+{% block encabezadofor %} Formulario de edicion {% endblock %}
+{% block contenido %}
+<div class="card shadow mb-4">
+  <div class="container p-3">
+    <div class="row justify-content-center">
+      <form action="{% url 'perActualizar' codigo.id_per %}" id="formulario4" method="POST"
+        enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row">
+          <div class="col-sm-2" id="grupo__nombre">
+            <label class="form-label">Nombre</label>
+            <input type="text" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+" maxlength="15" title="Solo letras"
+              class="text-uppercase form-control" name="nombre_per" id="nombre" autofocus value="{{codigo.nombre_per}}"
+              placeholder="" required>
+            <i class="formulario__validacion-estado fas fa-times-circle"></i>
+            <p class="formulario__input-error">El campo solo puede contener letras</p>
+          </div>
+          <div class="col-sm-2" id="grupo__apellidoP">
+            <label for="exampleFormControlInput1" class="form-label">Apellido Paterno</label>
+            <input type="text" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+" maxlength="15" title="Solo letras"
+              class="text-uppercase form-control" name="apellidoP_per" id="apellidoP" value="{{codigo.apellidoP_per}}"
+              placeholder="Paterno" required>
+            <i class="formulario__validacion-estado fas fa-times-circle"></i>
+            <p class="formulario__input-error">El campo solo puede contener letras</p>
+          </div>
+          <div class="col-sm-2" id="grupo__apellidoM">
+            <label for="exampleFormControlInput1" class="form-label">Apellido Materno</label>
+            <input type="text" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+" maxlength="15" title="Solo letras"
+              class="text-uppercase form-control" name="apellidoM_per" id="apellidoM" value="{{codigo.apellidoM_per}}"
+              placeholder="Materno">
+            <i class="formulario__validacion-estado fas fa-times-circle"></i>
+            <p class="formulario__input-error">El campo solo puede contener letras</p>
+          </div>
+          <div class="col-sm-2" id="grupo__telefono">
+            <label class="form-label">Telefono/celular:</label>
+            <input type="number" pattern="[0-9]{7,8}" maxlength="8" title="Solo 8 numeros maximo"
+              class="text-uppercase form-control" name="telf_per" id="telefono" value="{{codigo.telf_per}}"
+              placeholder="N°" required>
+            <i class="formulario__validacion-estado fas fa-times-circle"></i>
+            <p class="formulario__input-error">El campo solo puede contener numeros</p>
+          </div>
+          <div class="col-sm-2">
+            <label for="exampleFormControlInput1" class="form-label">Sexo</label>
+            <select name="sexo_per" id="sexo_per" class="form-control" required>
+              <option value="{{codigo.sexo_per}}">{{codigo.sexo_per}}</option>
+              <option value="Masculino">Masculino</option>
+              <option value="Femenino">Femenino</option>
+              <option value="Otros">Otros</option>
+            </select>
+          </div>
+          <div class="col-sm-2">
+            <label for="exampleFormControlInput1" class="form-label">Documento</label>
+            <abbr class='fas fa-question-circle'
+              title="Ingrese el tipo de documento de identidad de la persona."></abbr>
+            <select name="doc_per" id="inputdoc_per" class="form-control" required>
+              {% for documento in documentos %}
+              {% if documento.id_doc == codigo.documento_per_id %}
+              <option value="{{documento.id_doc}}">{{ documento.nombre_doc }}</option>
+              {% for documento in documentos %}
+              {% if documento.estado_doc == 1 %}
+              <option value="{{ documento.id_doc }}">{{ documento.nombre_doc }}</option>
+              {% endif %}
+              {% endfor %}
+              {% endif %}
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-sm-2" id="grupo__documento">
+            <label for="exampleFormControlInput1" class="form-label">Numero-Documento.</label>
+            <abbr class='fas fa-question-circle'
+              title="Ingrese el numero de documento de identidad de la persona."></abbr>
+            <input type="text" class="text-uppercase form-control" name="numDoc_per" id="documento"
+              value="{{ codigo.numDoc_per }}" placeholder="" required>
+            <i class="formulario__validacion-estado fas fa-times-circle"></i>
+            <p class="formulario__input-error">El campo solo puede contener numeros</p>
+          </div>
+          <div class="col-sm-2">
+            <label for="exampleFormControlInput1" class="form-label">Extension-Documeno</label>
+            <select name="exteDoc_per" id="exteDoc_per" class="form-control">
+              <option value="{{codigo.exteDoc_per}}">{{codigo.exteDoc_per}}</option>
+              <option value="Lpz">Lpz</option>
+              <option value="Scz">Scz</option>
+              <option value="Cbba">Cbba</option>
+              <option value="Oru">Oru</option>
+              <option value="Pnd">Pnd</option>
+              <option value="Psi">Psi</option>
+              <option value="Tja">Tja</option>
+              <option value="Bni">Bni</option>
+              <option value="Chq">Chq</option>
+              <option value="Otros">Otros</option>
+            </select>
+          </div>
+          <div class="col-sm-2">
+            <label for="exampleFormControlInput1" class="form-label">Lugar de nacimiento</label>
+            <select name="lugarNac_per" id="lugarNac_per" class="form-control" required>
+              <option value="{{codigo.lugarNac_per}}">{{codigo.lugarNac_per}}</option>
+              <option value="La Paz">La Paz</option>
+              <option value="Santa Cruz">Santa Cruz</option>
+              <option value="Cochabamba">Cochabamba</option>
+              <option value="Potosí">Potosí</option>
+              <option value="Chuquisaca">Chuquisaca</option>
+              <option value="Oruro">Oruro</option>
+              <option value="Tarija">Tarija</option>
+              <option value="Beni">Beni</option>
+              <option value="Pando">Pando</option>
+              <option value="Otros">Otros</option>
+            </select>
+          </div>
+          <div class="col-sm-2">
+            <label for="exampleFormControlInput1" class="form-label">Tipo-Sangre</label>
+            <select name="sangre_per" id="sangre_per" class="form-control">
+              <option value="{{codigo.sangre_per}}">{{codigo.sangre_per}}</option>
+              <option value="O+">O+</option>
+              <option value="O-">O-</option>
+              <option value="A+">A+</option>
+              <option value="A-">A-</option>
+              <option value="B+">B+</option>
+              <option value="B-">B-</option>
+              <option value="AB+">AB+</option>
+              <option value="AB-">AB-</option>
+            </select>
+          </div>
+          <div class="col-sm-2">
+            <label for="exampleFormControlInput1" class="form-label">Estado civil</label>
+            <select name="estCivil_per" id="estCivil_per" class="form-control" required>
+              <option value="{{codigo.estCivil_per}}">{{codigo.estCivil_per}}</option>
+              <option value="Soltero/a">Soltero/a</option>
+              <option value="Casado/a">Casado/a</option>
+              <option value="Concubinato">Concubinato</option>
+              <option value="Viudo/a">Viudo/a</option>
+            </select>
+          </div>
+          <div class="col-sm-2">
+            <label for="exampleFormControlInput1" class="form-label">Foto.</label>
+            <input type="file" class="form-control" accept="image/jpg." name="foto_per" value="{{codigo.foto_per}}"
+              placeholder="Subir foto">
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-sm-12" id="grupo__direccion">
+            <label class="form-label">Direccion.</label>
+            <input type="text" class="text-uppercase form-control" name="direccion_per" id="direccion" value="{{codigo.direccion_per}}" placeholder="" required>
+            <i class="formulario__validacion-estado fas fa-times-circle"></i>
+            <p class="formulario__input-error">El campo solo puede contener maximo 100 digitos</p>
+          </div>
+        </div>
+        <br>
+        <br>
+        <div class="row">
+          <div class="col-md-6">
+            <button type="submit" style="float: right" class="btn btn-primary btn-sm"><i
+                class="fas fa-check fa-sm"></i>Guardar
+            </button>
+          </div>
+          <div class="col-md-6">
+            <a class="btn btn-dark btn-sm " href="{% url 'perLista' %}"><i
+                class="fas fa-arrow-left fa- sm"></i>Volver</a>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

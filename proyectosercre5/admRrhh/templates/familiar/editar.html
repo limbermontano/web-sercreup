@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block encabezado %}Gestion familiar {% endblock %}
+{% block encabezadofor %} Formulario de edicion {% endblock %}
+{% block contenido %}
+<div class="card shadow mb-4">
+  <div class="container p-3">
+    <div class="row justify-content-center">
+      <form action="{% url 'famActualizar' codigo.id_fam %}" id="formulario9" method="POST">
+        {% csrf_token %}
+        <div class="row">
+          <div class="col-sm-3">
+            <label for="exampleFormControlInput1" class="form-label">Personal Activo</label>
+            <select name="personal_fam" id="personal_fam" class="form-control" required>
+
+              {% for personal in personales %}
+                {% if personal.id_perl == codigo.personal_fam_id %}
+                <option value="{{ personal.id_perl }}">{{ personal.persona_perl.nombre_per }} {{ personal.persona_perl.apellidoP_per }}</option>
+                  {% for personal in personales %}
+                    {% if personal.estado_perl == 1 %}
+                    <option value="{{ personal.id_perl }}">{{ personal.persona_perl.nombre_per }} {{ personal.persona_perl.apellidoP_per }} </option>
+                    {% endif %}
+                  {% endfor %}
+              {% endif %}
+
+              {% endfor %}
+            </select>
+          </div>
+          <div class="col-sm-3">
+            <label for="exampleFormControlInput1" class="form-label">Parentesco Familiar</label>
+            <select name="parentesco_fam" id="inputparentesco_fam" class="form-control" required>
+              {% for parentesco in parentescos %}
+              {% if parentesco.id_par == codigo.parentesco_fam_id %}
+              <option value="{{ parentesco.id_par }}">{{ parentesco.nombre_par }}</option>
+              {% for parentesco in parentescos %}
+              <option value="{{ parentesco.id_par }}">{{ parentesco.nombre_par }}</option>
+              {% endfor %}
+              {% endif %}
+              {% endfor %}
+            </select>
+          </div>
+          <div class="col-sm-2" id="grupo__nombre">
+            <label for="exampleFormControlInput1" class="form-label">Nombre Familiar</label>
+            <abbr class='fas fa-question-circle' title="Nombre del familiar del trabajador."></abbr>
+            <input type="text" class="text-uppercase form-control" name="nombre_fam" value="{{codigo.nombre_fam}}"
+              autofocus placeholder="" required>
+          </div>
+          <div class="col-sm-2" id="grupo__apellidoP">
+            <label for="exampleFormControlInput1" class="form-label">Apellido Familiar</label>
+            <abbr class='fas fa-question-circle' title="Apellidos del familiar del trabajador."></abbr>
+            <input type="text" class="text-uppercase form-control" name="apellidoP_fam" value="{{codigo.apellidoP_fam}}"
+              placeholder="">
+          </div>
+          <div class="col-sm-2" id="grupo__telefono">
+            <label for="exampleFormControlInput1" class="form-label">Telf- Familiar</label>
+            <input type="number" class="text-uppercase form-control" name="telef_fam" value="{{codigo.telef_fam}}"
+              placeholder="">
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-sm-12">
+            <label for="exampleFormControlInput1" class="form-label">Nota</label>
+            <input type="text" class="text-uppercase form-control" name="nota_fam" value="{{codigo.nota_fam}}" autofocus
+              placeholder="">
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-md-6">
+            <button type="submit" style="float: right" class="btn btn-primary btn-sm"><i
+                class="fas fa-check fa-sm"></i>Guardar
+            </button>
+          </div>
+
+          <div class="col-md-6">
+            <a class="btn btn-dark btn-sm " href="{% url 'famLista' %}"><i
+                class="fas fa-arrow-left fa- sm"></i>Volver</a>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

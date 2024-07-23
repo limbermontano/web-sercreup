@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% block encabezado %} 
+<p><center> Sistema de Administracion de Proyectos </center></p>
+{% endblock %}
+{% block encabezadofor %} 
+Panel de inicio  
+{% endblock %}
+{% block contenido %} 
+<div class="row">
+    <div class="col-lg-6">
+        <div class="card" style="box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5); padding: 10px; border: 1px solid black;">
+            <div class="card-body">
+                <h5 class="card-title">Gráfico: Etapas de proyectos por % y cantidad:</h5>
+                <!-- Pie Chart -->
+                <div id="pieChart"></div>
+                <script>
+                    document.addEventListener("DOMContentLoaded", () => {
+                        const counters = {
+                            inicio: {{ counters.inicio }},
+                            Estacador: {{ counters.Estacador }},
+                            Dibujante: {{ counters.Dibujante }},
+                            Digitador: {{ counters.Digitador }}
+                        };
+                
+                        new ApexCharts(document.querySelector("#pieChart"), {
+                            series: Object.values(counters),
+                            chart: {
+                                height: 350,
+                                type: 'pie',
+                                toolbar: {
+                                    show: true
+                                }
+                            },
+                            labels: [ `Inicio: Proyectos:(${counters.inicio})`,
+                                `Estacador: Proyectos:(${counters.Estacador})`,
+                                `Dibujante: Proyectos:(${counters.Dibujante})`,
+                                `Digitador: Proyectos:(${counters.Digitador})`
+                            ],
+                            responsive: [{
+                                breakpoint: 480,
+                                options: {
+                                    chart: {
+                                        width: 200
+                                    },
+                                    legend: {
+                                        position: 'bottom'
+                                    }
+                                }
+                            }]
+                        }).render();
+                    });
+                </script>
+                
+                <!-- End Pie Chart -->
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card" style="box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5); padding: 10px; border: 1px solid black;">
+            <div class="card-body">
+                <h5 class="card-title">Proyectos para entrega segun fecha:</h5>
+                <table class="table table-striped" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Proyecto</th>
+                            <th>Fecha para entrega</th>
+                            <th>Fecha Actual</th>
+                            <th><center>Diferencia</center></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for resultado in resultados %}
+                            {% if resultado.diferencia is not none %}
+                            <tr style="color: {% if resultado.proyecto.fechaDisen_proy <= fechaactuales %}red{% endif %};">
+                                <td>{{ resultado.proyecto.nombre_proy }}</td>
+                                <td><center>{{ resultado.proyecto.fechaDisen_proy }}</center></td>
+                                <td>{{ fechaactuales }}</td>
+                                <td>
+                                    {{ resultado.diferencia }}
+                                    {% if resultado.proyecto.fechaDisen_proy <= fechaactuales %}
+                                        = Dias atrasados
+                                    {% else %}
+                                        = Dias en curso
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

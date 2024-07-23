@@ -1,0 +1,30 @@
+body {
+    background-color: #fff;
+    color: #333;
+}
+
+#accordionSidebar {
+    background-color: #f8f9fc;
+    /* Otros estilos relacionados con la barra lateral */
+}
+
+.nav-item {
+    color: #000;
+    /* Color de texto para los elementos de navegación */
+}
+
+/* Estilos para el modo oscuro */
+body.modo-oscuro {
+    background-color: #1a1a1a;
+    color: #fff;
+}
+
+body.modo-oscuro #accordionSidebar {
+    background-color: #282c35;
+    /* Otros estilos relacionados con la barra lateral en modo oscuro */
+}
+
+body.modo-oscuro .nav-item {
+    color: #fff;
+    /* Color de texto para los elementos de navegación en modo oscuro */
+}

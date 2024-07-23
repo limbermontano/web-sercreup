@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block encabezado %}Gestion orden de trabajo{% endblock %}
+{% block encabezadofor %} Formulario de registro {% endblock %}
+{% block contenido %} 
+<div class="card shadow mb-4">
+    <!-- creacion del container para la entrada de datos -->
+    <div class="container p-2 my-2 border">
+      <div class="row justify-content-center">
+        <form action="{% url 'ordGuardar' %}" id="formulario6" method="POST">
+          {% csrf_token %}
+          <div class="row">
+            <div class="col-sm-2">
+              <label for="exampleFormControlInput1" class="form-label">Proyecto</label>
+                  <select  name="proyecto_ord" id="inputproyecto_ord"   class="form-control" required>
+                    <option value="">-Seleccione-</option>
+                    {% for proyecto in orden_no_encontrados %}
+                      <option value="{{ proyecto.id_proy }}">{{ proyecto.nombre_proy }} </option>
+                    {% endfor %}
+                  </select>
+            </div>
+            <div class="col-sm-2">
+              <label class="form-label">Numero de orden:</label>
+              <input type="number" pattern="[0-9]{7,8}" maxlength="8" title="Solo 8 numeros maximo"  class="text-uppercase form-control" name="numero_ord"  placeholder="N°">
+              </div>
+              <div class="col-sm-2">
+                <label class="form-label">Numero de caja:</label>
+                <input type="number" pattern="[0-9]{7,8}" maxlength="8" title="Solo 8 numeros maximo"  class="text-uppercase form-control" name="numeroCaj_ord"  placeholder="N°">
+              </div>
+              <div class="col-sm-6"id="grupo__nota">
+                <label class="form-label">Nota.</label>
+                <input type="text" class="text-uppercase form-control" name="nota_ord" id="nota" placeholder="">
+                <i class="formulario__validacion-estado fas fa-times-circle"></i>
+                <p class="formulario__input-error">El campo solo puede contener maximo 70 caracteres</p> 
+              </div>
+            
+          </div> 
+            <br>
+          <!-- creacion de los botones de registro -->
+          <div class="row">
+            <div class="col-md-6">
+              <button type="submit" style="float: right" class="btn btn-primary btn-sm"><i class="fas fa-check fa-sm"></i>Guardar
+              </button>
+            </div>
+            <div class="col-md-6">
+                  <a class="btn btn-dark btn-sm " href="{% url 'ordLista' %}"><i class="fas fa-arrow-left fa- sm"></i>Volver</a>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+</div>
+{% endblock  %}

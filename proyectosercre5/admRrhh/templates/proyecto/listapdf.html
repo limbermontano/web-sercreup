@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+
+    table{
+      border: 1px solid #999;
+      border-collapse: collapse;
+
+    }
+    @media (max-width: 600px) {
+        th {
+            font-size: 10px; /* Ajusta el tamaño de la fuente para pantallas más pequeñas */
+        }
+    }
+    </style>
+    <title>Formulario-asig</title>
+</head>
+<body>
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col-sm-6">
+        <p style="text-align: left;"><img src="/static/img/logosercre.png" class="img" alt="" width="195" height="68"></p>
+        
+      </div>
+      <div style="text-align: right;">
+        <p>Santa Cruz de la Sierra: {{ datofech|date:" D d M Y " }}</p>
+      </div>
+    </div>
+  </div>
+  <h1 style="text-align: center"><b>DETALLE DE ASIGNACIONES A PROYECTOS</b></h1>
+   <p >Hora {{ datofech|date:"H:i:s" }}</p>
+   <p>Usuario: {{ user.username }}</p>
+  <h2><b>LISTA DE ASIGNACIONES</b></h2>
+  <div class="row">
+    <div class="card-body">
+      <div>
+        <table>
+          <thead>
+            <tr style="text-align: center; height: 30px;">
+            <td style="width: 12.4706%;"><strong>PROYECTO</strong></td>
+            <td style="width: 12.4706%;"><strong>UBICACION</strong></td>
+            <td style="width: 12.4706%;"><strong>FISCAL</strong></td>
+            <td style="width: 12.3137%;"><strong>PERSONAL</strong></td>
+            <td style="width: 9.09805%;"><strong>CARGO</strong></td>
+            <td style="width: 16.3529%;"><strong>FECHA DE INICIO</strong></td>
+            <td style="width: 41.3333%;"><strong>NOTA</strong></td>
+            </tr>
+          </thead >
+          <tbody style="text-align: center; height: 30px;" >
+          {% for asignacion in asignaciones %}
+            {% if asignacion.estado_asig == 1 %}
+              {% for proyecto in proyectos %}
+                {% if proyecto.id_proy == asignacion.proyecto_asig_id and proyecto.nombre_proy == codigo.nombre_proy  %}
+                    <tr>
+                      <td>{{proyecto.nombre_proy}}</td>
+                      <td>{{proyecto.ubicacion_proy}}</td>
+                      <td>{{proyecto.fiscal_proy.nombre_fis}} {{proyecto.fiscal_proy.apellidoP_fis}}</td>
+                      <td>{{asignacion.personal_asig.persona_perl.nombre_per}} {{asignacion.personal_asig.persona_perl.apellidoP_per}}</td>
+                      <td>{{asignacion.personal_asig.cargo_perl.nombre_carg}}</td>
+                      <td>{{asignacion.fechaIni_asig}}</td>
+                      <td>{{asignacion.nota_asig }}</td>
+                      <td style="float: right">
+                        <form method="post" id="formulario6" action="{% url 'asigEliminarD' asignacion.id_asig %}">
+                          {% csrf_token %}
+                          
+                          <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                          
+                        </form>
+                      </td>
+                    </tr>
+                {% endif %}
+              {% endfor %}
+            {% endif %}
+          {% endfor %}
+          </tbody>
+        </table>
+        <p style="text-align: center">Av. Rolando de Chazal #4443 - Tel.:3584241 - e-mail: gerencia@sercre.com.bo</p>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
+    
+
+
+
+

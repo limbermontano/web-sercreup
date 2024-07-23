@@ -1,0 +1,186 @@
+{% extends "base.html" %}
+{% block encabezado %}Gestion personal{% endblock %}
+{% block encabezadofor %} 
+Formulario de edicion{% endblock %}
+{% block contenido %}
+<div class="container p-3">
+  <form action="{% url 'perlActualizar' codigo.id_perl %}" id="formulario5" method="POST">
+    {% csrf_token %}
+    <div class="row">
+      <div class="col-sm-2">
+        <label for="exampleFormControlInput1" class="form-label">persona</label>
+          <select  name="persona_perl"  class="form-control" required>
+            {% for persona in personas %}
+              {% if persona.id_per == codigo.persona_perl_id %}
+              <option value="{{ persona.id_per }}">{{ persona.nombre_per }} {{ persona.apellidoP_per }}</option>
+                {% for persona in personas_no_encontradas %}
+                  <option value="{{ persona.id_per }}">{{ persona.nombre_per }} {{ persona.apellidoP_per }}</option>
+                {% endfor %}
+              {% endif %}
+            {% endfor %}
+          </select>
+      </div>
+      <div class="col-sm-2" id="grupo__hijo">
+        <label for="exampleFormControlInput1" class="form-label">Cantidad-Hijos</label>
+        <input type="text" class="form-control" name="hijos_perl" id="hijo" value="{{ codigo.hijos_perl }}"placeholder=""required>
+        <i class="formulario__validacion-estado fas fa-times-circle"></i>
+        <p class="formulario__input-error">Solo puede contener 1 digito numerico</p> 
+      </div>
+      <div class="col-sm-2">
+        <label for="exampleFormControlInput1" class="form-label">Area</label>
+            <select  name="area_perl" id="inputarea_perl"   class="form-control" required>
+              {% for area in areas %}
+                {% if area.id_are == codigo.area_perl_id %}
+                  <option value="{{ area.id_are }}">{{ area.nombre_are }}</option>
+                  {% for area in areas %}
+                      {% if area.estado_are == 1 %}
+                      <option value="{{ area.id_are }}">{{ area.nombre_are }}</option>
+                      {% endif %}    
+                  {% endfor %}  
+                {% endif %}    
+              {% endfor %}       
+            </select>
+      </div>
+      <div class="col-sm-2">
+        <label for="exampleFormControlInput1" class="form-label">Cargo</label>
+            <select  name="cargo_perl" id="inputcargo_perl"   class="form-control">
+              {% for cargo in cargos %}
+                {% if cargo.id_carg == codigo.cargo_perl_id %}
+                  <option value="{{ cargo.id_carg }}">{{ cargo.nombre_carg }}</option>
+                  {% for cargo in cargos %}
+                      {% if cargo.estado_carg == 1 %}
+                      <option value="{{ cargo.id_carg }}">{{ cargo.nombre_carg }}</option>
+                      {% endif %}    
+                  {% endfor %}  
+                {% endif %}    
+              {% endfor %}  
+            </select>
+      </div>
+      <div class="col-sm-2">
+        <label for="exampleFormControlInput1" class="form-label">Nivel de Estudio</label>
+            <select  name="estudio_perl" id="inputestudio_perl"   class="form-control" required>
+              {% for estudio in estudios  %}
+                {% if estudio.id_est == codigo.estudio_perl_id %}
+                  <option value="{{ estudio.id_est }}">{{ estudio.nombre_est }}</option>
+                  {% for estudio in estudios %}
+                      {% if estudio.estado_est == 1 %}
+                      <option value="{{ estudio.id_est }}">{{ estudio.nombre_est }}</option>
+                      {% endif %}    
+                  {% endfor %}  
+                {% endif %}    
+              {% endfor %}  
+            </select>
+      </div>
+      <div class="col-sm-2">
+        <label for="exampleFormControlInput1" class="form-label">Profesion</label>
+            <select  name="profesion_perl"   class="form-control">
+              {% for profe in profesiones  %}
+                {% if profe.id_prof == codigo.profesion_perl_id %}
+                  <option value="{{ profe.id_prof }}">{{ profe.nombre_prof }}</option>
+                  {% for profe in profesiones %}
+                      {% if profe.estado_prof == 1 %}
+                      <option value="{{ profe.id_prof }}">{{ profe.nombre_prof }}</option>
+                      {% endif %}    
+                  {% endfor %}  
+                {% endif %}    
+              {% endfor %}  
+            </select>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-sm-2">
+        <label for="exampleFormControlInput1" class="form-label">Fecha_Ing.</label>
+        <input type="date" class="form-control" name="fechIngre_perl" value="{{ codigo.fechIngre_perl }}" placeholder=""required>
+      </div>
+      <div class="col-sm-2">
+        <label for="exampleFormControlInput1" class="form-label">Fecha_Nac.</label>
+        <input type="date" class="form-control" name="fechNac_perl" value="{{ codigo.fechNac_perl }}" placeholder=""required>
+      </div>
+      <div class="col-sm-2">
+        <label for="exampleFormControlInput1" class="form-label">VencDoc.</label>
+        <input type="date" class="form-control" name="vencDoc_perl" value="{{codigo.vencDoc_perl }}"
+        placeholder="">
+      </div>
+      <div class="col-sm-2">
+        <label for="exampleFormControlInput1" class="form-label">Licencia</label>
+        <abbr class='fas fa-question-circle' title="Introduce si la persona cuenta con licencia de conducir."></abbr>
+            <select  name="licCond_perl" id="licCond_perl" class="form-control">
+                <option value="{{ codigo.licCond_perl }}">{{ codigo.licCond_perl }}</option>
+                <option value="Si">Si</option>
+                <option value="No">No</option>
+            </select>
+      </div>
+      <div class="col-sm-2">
+        <label for="exampleFormControlInput1" class="form-label">Tipo_Licencia</label>
+            <select  name="tipoLic_perl" id="tipoLic_perl"   class="form-control">
+                <option value="{{ codigo.tipoLic_perl }}">{{ codigo.tipoLic_perl }}</option>
+                <option value="P">P</option>
+                <option value="M">M</option>
+                <option value="A">A</option>
+                <option value="B">B</option>
+                <option value="C">C</option>
+                <option value="T">T</option>
+            </select>
+      </div>
+      <div class="col-sm-2">
+      <label for="exampleFormControlInput1" class="form-label">VenLicencia.</label>
+      <input type="date" class="text-upperlcase form-control" name="fechVenlic_perl" value="{{codigo.fechVenlic_perl }}"placeholder="">
+      </div>
+      
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-sm-2" id="grupo__ctbanco">
+        <label for="exampleFormControlInput1" class="form-label">Cta_Banca.</label>
+        <abbr class='fas fa-question-circle' title="Introduce el numero de cuenta del banco de la persona."></abbr>
+        <input type="number" class="text-upperlcase form-control" name="ctaBanc_perl" id="ctbanco" value="{{codigo.ctaBanc_perl }}" placeholder="">
+        <i class="formulario__validacion-estado fas fa-times-circle"></i>
+        <p class="formulario__input-error">El campo solo puede contener maximo 10 digitos</p> 
+      </div>
+      <div class="col-sm-2" id="grupo__nua">
+        <label for="exampleFormControlInput1" class="form-label">Nua.</label>
+        <input type="number" class="text-upperlcase form-control" name="nua_perl" id="nua" value="{{codigo.nua_perl }}"placeholder="">
+        <i class="formulario__validacion-estado fas fa-times-circle"></i>
+        <p class="formulario__input-error">El campo solo puede contener maximo 8 digitos</p> 
+      </div>
+      <div class="col-sm-2">
+        <label for="exampleFormControlInput1" class="form-label">Cta_Afp.</label>
+            <select  name="ctaAfp_perl" id="ctaAfp"   class="form-control">
+                <option value="{{ codigo.ctaAfp_perl}}">{{ codigo.ctaAfp_perl}}</option>
+                <option value="Gestora">Gestora</option>
+                <option value="Prevision">Prevision</option>
+                <option value="Futuro">Futuro</option>
+                <option value="Otros">Otros</option>
+            </select>
+      </div>
+
+      <div class="col-sm-2" id="grupo__seguro">
+        <label for="exampleFormControlInput1" class="form-label">N°_Seguro Afp.</label>
+        <input type="number" class="text-upperlcase form-control" name="aseg_perl" id="seguro" value="{{codigo.aseg_perl}}"placeholder="">
+        <i class="formulario__validacion-estado fas fa-times-circle"></i>
+        <p class="formulario__input-error">El campo solo puede contener maximo 10 digitos</p> 
+      </div>
+      <div class="col-sm-2" id="grupo__sueldo">
+        <label for="exampleFormControlInput1" class="form-label">Sueldo.</label>
+        <input type="number" class="text-upperlcase form-control" name="sueldo_perl" id="sueldo" value="{{codigo.sueldo_perl}}"placeholder=""required>
+        <i class="formulario__validacion-estado fas fa-times-circle"></i>
+        <p class="formulario__input-error">El campo solo puede contener maximo 4 digitos</p> 
+      </div>
+    </div>
+      <br>  
+    <br>
+    <div class="row">
+      <div class="col-md-6">
+        <button type="submit" style="float: right" class="btn btn-primary btn-sm"><i class="fas fa-check fa-sm"></i>Guardar
+        </button>
+      </div>
+      <div class="col-md-6">
+            <a class="btn btn-dark btn-sm " href="{% url 'perlLista' %}"><i class="fas fa-arrow-left fa- sm"></i>Volver</a>
+      </div>
+    </div>
+  </form>
+
+</div>
+
+{% endblock %}

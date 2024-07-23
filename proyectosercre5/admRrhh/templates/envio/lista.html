@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+{% block encabezado %}Gestion envio{% endblock %}
+{% block encabezadofor %} Lista de proyectos enviados a C.R.E {% endblock  %}
+{% block js %}
+<script>
+  function eliminarFiscal(id) {
+    Swal.fire({
+      "title": "¿ Estas seguro que deseas Eliminar el Registro?",
+      "text": "¡ No podras revertir esto!",
+      "icon": "warning",
+      "showCancelButton": true,
+      "confirmButtonColor": "#d33",
+      "cancelButtonColor": true,
+      "confirmButtonText": " Si, Eliminar ", 
+      "cancelButtonText": " Cancelar ",      
+    })
+    .then(function(result) {
+      if (result.isConfirmed){ 
+        window.location.href="/envEliminar/" +id+ " "
+      }
+    })
+    
+  }
+</script> 
+{% endblock %}
+{% block contenido %} 
+<div class="col-md-12">
+  <div class="row"id="grupo__nota">
+    <div class="col-md-6">
+      <form action="#" id="formulario6" method="GET">
+        <div class="btn-group">
+          <input type="text" name="buscar" class="form-control" id="nota"/>
+          <p class="formulario__input-error">""</p>
+          <button type="submit" class="btn btn-primary btn-sm">
+            <i class="fas fa-search fa-sm"></i>
+          </button>
+        </div>
+      </form>
+    </div>
+    <div class="col-md-6">
+      <a
+        class="btn btn-primary btn-sm"
+        style="float: right"
+        href="{% url 'envCrear' %}"
+        ><i class="fas fa-plus fa-sm"></i> Nuevo</a
+      >
+    </div>
+  </div>
+</div>
+<br />
+<div class="card shadow mb-4">
+  <div class="card-body">
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+      <div class="table-responsive">
+        <table
+          class="table table-striped"
+          id="dataTable"
+          width="100%"
+          cellspacing="0"
+        >
+          <thead>
+            <tr>
+              <th>Proyecto</th>
+              <th>Fecha envio</th>
+              <th>Respaldo</th>
+              <th>Nota</th>
+              <th style="float: right">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for envio in envios %}
+              
+              <tr>
+                <td>{{envio.proyecto_env.nombre_proy}}</td>
+                <td>{{envio.fechaEnv_env}}</td>
+                <td>{% if envio.resplado_env %}Si{% else %}No{% endif %}</td>
+                <td>{{envio.nota_env }}</td>
+                <td style="float: right">
+                  
+                  <a class="btn btn-primary btn-sm " href="{% url 'envEditar' envio.id_env %}"><i class="fas fa-pen"></i></a>
+                  |
+                  <a class="btn btn-danger btn-sm " href="#" onclick="eliminarEnvio({{ envio.id_env }})"><i class="fas fa-trash"></i></a>
+                  
+                </td>
+              </tr>
+
+            {% endfor %}
+          </tbody>
+        </table>
+        <nav aria-label="Page navigation">
+          <ul class="pagination">
+              {% if envios.has_previous %}
+                  <li class="page-item">
+                      <a class="page-link" href="?page=1" aria-label="Primera">
+                          <span aria-hidden="true">&laquo;&laquo;</span>
+                      </a>
+                  </li>
+                  <li class="page-item">
+                      <a class="page-link" href="?page={{ envios.previous_page_number }}" aria-label="Anterior">
+                          <span aria-hidden="true">&laquo;</span>
+                      </a>
+                  </li>
+              {% endif %}
+      
+              <li class="page-item disabled">
+                  <span class="page-link">Página {{ envios.number }} de {{ envios.paginator.num_pages }}</span>
+              </li>
+      
+              {% if envios.has_next %}
+                  <li class="page-item">
+                      <a class="page-link" href="?page={{ envios.next_page_number }}" aria-label="Siguiente">
+                          <span aria-hidden="true">&raquo;</span>
+                      </a>
+                  </li>
+                  <li class="page-item">
+                      <a class="page-link" href="?page={{ envios.paginator.num_pages }}" aria-label="Última">
+                          <span aria-hidden="true">&raquo;&raquo;</span>
+                      </a>
+                  </li>
+              {% endif %}
+          </ul>
+        </nav>
+      </div>
+    </div>  
+  </div>
+</div>
+{% endblock  %}
+

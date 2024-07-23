@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block encabezado %}Gestion fiscal{% endblock %}
+{% block encabezadofor %} Formulario de edicion {% endblock %}
+{% block contenido %}
+<div class="card shadow mb-4">
+  <!-- creacion del container para la entrada de datos -->
+  <div class="container p-2 my-2 border">
+    <div class="row justify-content-center">
+      <form action="{% url 'fisActualizar' codigo.id_fis %}" id="formulario8"  method="POST">
+        {% csrf_token %}
+        <div class="row">
+          <div class="col-sm-4" id="grupo__nombre">
+              <label class="form-label">Nombre</label>
+              <input type="text" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+" maxlength="15" title="Solo letras" class="text-uppercase form-control" name="nombre_fis" id="nombre" value="{{codigo.nombre_fis}}" autofocus placeholder=""required>
+              <i class="formulario__validacion-estado fas fa-times-circle"></i>
+              <p class="formulario__input-error">El campo solo puede contener letras</p>
+            </div>
+          <div class="col-sm-4" id="grupo__apellidoP">
+            <label  class="form-label">ApellidoP</label>
+            <input type="text"  pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+" maxlength="15" title="Solo letras" class="text-uppercase form-control" name="apellidoP_fis" id="apellidoP" value="{{codigo.apellidoP_fis}}" placeholder="">
+            <i class="formulario__validacion-estado fas fa-times-circle"></i>
+            <p class="formulario__input-error">El campo solo puede contener letras</p>
+          </div>
+          <div class="col-sm-4">
+            <label for="exampleFormControlInput1" class="form-label">Sistema de Zona</label>
+                <select  name="zona_fis" id="inputzona_fis"   class="form-control" required>
+                  {% for zona in zonas %}
+                    {% if zona.id_zon == codigo.zona_fis_id %}
+                      <option value="{{ zona.id_zon }}">{{ zona.nombre_zon }}</option>
+                      {% for zona in zonas %}
+                        {% if zona.estado_zon == 1 %}
+                          <option value="{{ zona.id_zon }}">{{ zona.nombre_zon }}</option>
+                        {% endif %}    
+                      {% endfor %}  
+                    {% endif %} 
+                  {% endfor %}
+                </select>
+          </div>
+        </div> 
+          <br>
+        <!-- creacion de los botones de registro -->
+        <div class="row">
+          <div class="col-md-6">
+            <button type="submit" style="float: right" class="btn btn-primary btn-sm" ><i class="fas fa-check fa-sm"></i>Guardar
+            </button>
+          </div>
+          <div class="col-md-6">
+                <a class="btn btn-dark btn-sm " href="{% url 'fisLista' %}"><i class="fas fa-arrow-left fa- sm"></i>Volver</a>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
