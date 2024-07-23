@@ -1,0 +1,5 @@
+Django==5.0 
+django-select2==8.1.2 
+mysqlclient==2.2.1
+Pillow==10.1.0 
+reportlab==4.0.9
